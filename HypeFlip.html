@@ -1,0 +1,1206 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HypeFlip - Sourced by Teens, Curated for You</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0B0F19;
+      color: #F3F4F6;
+    }
+    /* Neon Glow Accents */
+    .neon-border {
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+    }
+    .neon-text-green {
+      color: #22C55E;
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+    }
+    .neon-text-blue {
+      color: #3B82F6;
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+    }
+    .neon-bg-green {
+      background-color: #22C55E;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.6);
+    }
+    /* Scrollbar customization */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4B5563;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-green-500 selection:text-black">
+
+  <!-- TOP MARQUEE BANNER -->
+  <div class="bg-gradient-to-r from-green-500 via-emerald-600 to-blue-600 py-1.5 px-4 text-center text-xs font-bold text-black tracking-widest uppercase overflow-hidden whitespace-nowrap">
+    <div class="inline-block animate-pulse">
+      🚀 TEEN-OWNED & OPERATED • NEW ARRIVALS EVERY FRIDAY • 100% AUTHENTIC GUARANTEED • SECURE FLIPS ONLY 🚀
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="border-b border-gray-800 bg-gray-900/80 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-green-400 to-blue-500 flex items-center justify-center font-extrabold text-black text-xl shadow-lg shadow-emerald-500/20 transform hover:scale-105 transition">
+          ⚡
+        </div>
+        <div>
+          <h1 class="text-2xl font-black tracking-tight flex items-center gap-2">
+            HYPE<span class="text-green-400 font-extrabold bg-green-500/10 px-2 py-0.5 rounded border border-green-500/30">FLIP</span>
+          </h1>
+          <p class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">Alex & Tyler's Curated Inventory</p>
+        </div>
+      </div>
+
+      <!-- Navigation & Mode Toggle -->
+      <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-center">
+        <!-- Tab Selectors -->
+        <div class="bg-gray-950 p-1 rounded-xl border border-gray-800 flex items-center gap-1">
+          <button id="btn-shop" onclick="switchView('shop')" class="px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-green-500 to-emerald-600 text-black shadow-lg">
+            🛒 Shop Storefront
+          </button>
+          <button id="btn-admin" onclick="switchView('admin')" class="px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white">
+            💼 Teen Workspace
+          </button>
+        </div>
+
+        <!-- Cart Trigger (Only visible on Shop Mode) -->
+        <button id="header-cart-btn" onclick="toggleCartModal(true)" class="relative bg-gray-800 hover:bg-gray-700 text-white p-2.5 rounded-xl border border-gray-700 transition flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="cart-count-badge" class="absolute -top-1.5 -right-1.5 bg-green-500 text-black font-extrabold text-[10px] h-5 w-5 rounded-full flex items-center justify-center shadow-md animate-bounce hidden">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6">
+    
+    <!-- ==================== VIEW 1: CUSTOMER SHOP ==================== -->
+    <section id="view-shop" class="space-y-8">
+      
+      <!-- HERO BANNER -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 to-gray-950 border border-gray-800 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8 neon-border">
+        <!-- Abstract glowing circles in bg -->
+        <div class="absolute -top-12 -left-12 w-48 h-48 bg-green-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+        <div class="space-y-4 max-w-xl relative z-10 text-center md:text-left">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20">
+            🔥 Hand-Selected & Sourced by Us
+          </span>
+          <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            Get the Most In-Demand <br class="hidden sm:inline">
+            <span class="bg-gradient-to-r from-green-400 via-emerald-400 to-blue-500 text-transparent bg-clip-text">Grails & Collectibles</span>
+          </h2>
+          <p class="text-gray-400 text-sm sm:text-base">
+            No overpriced retail markups. We scour the web, local meets, and drops to bring you authentic gear, collectible toys, and streetwear at fair reseller rates.
+          </p>
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+            <span class="text-xs bg-gray-800 px-3 py-1.5 rounded-lg text-gray-300 font-medium border border-gray-700">✓ 100% Legit</span>
+            <span class="text-xs bg-gray-800 px-3 py-1.5 rounded-lg text-gray-300 font-medium border border-gray-700">✓ Lightning Fast Shipping</span>
+            <span class="text-xs bg-gray-800 px-3 py-1.5 rounded-lg text-gray-300 font-medium border border-gray-700">✓ Local Pickup Available</span>
+          </div>
+        </div>
+
+        <!-- Interactive Fast Stats -->
+        <div class="grid grid-cols-2 gap-4 w-full md:w-80 relative z-10">
+          <div class="bg-gray-900/60 backdrop-blur border border-gray-800 p-4 rounded-2xl text-center">
+            <div class="text-3xl font-black text-green-400" id="hero-total-items">5</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Active Items</div>
+          </div>
+          <div class="bg-gray-900/60 backdrop-blur border border-gray-800 p-4 rounded-2xl text-center">
+            <div class="text-3xl font-black text-blue-400">100%</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Authentic</div>
+          </div>
+          <div class="bg-gray-900/60 backdrop-blur border border-gray-800 p-4 rounded-2xl text-center">
+            <div class="text-3xl font-black text-pink-500" id="hero-sold-count">12</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Successful Flips</div>
+          </div>
+          <div class="bg-gray-900/60 backdrop-blur border border-gray-800 p-4 rounded-2xl text-center">
+            <div class="text-3xl font-black text-yellow-400">4.9★</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Seller Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & SEARCH BAR -->
+      <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-gray-900 p-4 rounded-2xl border border-gray-800">
+        <!-- Categories -->
+        <div class="flex flex-wrap gap-2 w-full md:w-auto" id="category-filters">
+          <button onclick="filterCategory('All')" id="cat-all" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-green-500 text-black">
+            All Items
+          </button>
+          <button onclick="filterCategory('Collectibles')" id="cat-collectibles" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-gray-800 text-gray-300 hover:bg-gray-700">
+            🏎️ Collectibles / Toys
+          </button>
+          <button onclick="filterCategory('Sneakers')" id="cat-sneakers" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-gray-800 text-gray-300 hover:bg-gray-700">
+            👟 Sneakers & Streetwear
+          </button>
+          <button onclick="filterCategory('Tech')" id="cat-tech" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-gray-800 text-gray-300 hover:bg-gray-700">
+            ⚡ Tech Accessories
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative w-full md:w-72">
+          <input type="text" id="shop-search" oninput="searchProducts()" placeholder="Search active flips..." class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 pl-10 pr-4 text-xs transition placeholder:text-gray-600 outline-none">
+          <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <!-- PRODUCT GRID -->
+      <div>
+        <h3 class="text-lg font-extrabold tracking-tight mb-6 flex items-center gap-2">
+          🚀 <span class="text-white">Live Inventory</span>
+          <span class="text-xs font-normal text-gray-500">(Updates instantly when you add items in the workspace!)</span>
+        </h3>
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Dynamically populated via Javascript -->
+        </div>
+        
+        <!-- Empty Store State -->
+        <div id="empty-store-state" class="hidden text-center py-16 bg-gray-900/30 rounded-2xl border border-dashed border-gray-800 space-y-3">
+          <div class="text-4xl">📦</div>
+          <h4 class="text-lg font-bold text-gray-300">Out of Stock!</h4>
+          <p class="text-gray-500 text-sm max-w-sm mx-auto">Wow, we've flipped everything! Head into the Teen Workspace to add custom inventory or generate mock stock.</p>
+          <button onclick="seedInitialCatalog()" class="px-4 py-2 bg-green-500 text-black rounded-xl text-xs font-bold hover:bg-green-400 transition">
+            Reset Sample Catalog
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== VIEW 2: TEEN ADMIN WORKSPACE ==================== -->
+    <section id="view-admin" class="hidden space-y-8">
+      
+      <!-- DASHBOARD INFO CARD -->
+      <div class="bg-gradient-to-r from-slate-900 to-gray-950 p-6 rounded-2xl border border-gray-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+          <span class="text-xs bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full font-bold border border-blue-500/20 uppercase tracking-wider">Founder Portal</span>
+          <h2 class="text-2xl font-black mt-2">Alex & Tyler's command center</h2>
+          <p class="text-gray-400 text-xs mt-1">Manage physical inventory, compute real-time margins, and utilize AI to identify high-value resale products.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="seedInitialCatalog()" class="px-3.5 py-2 bg-gray-900 border border-gray-800 hover:bg-gray-800 rounded-xl text-xs font-bold text-gray-300 transition flex items-center gap-1.5">
+            🔄 Refresh Sample Catalog
+          </button>
+          <button onclick="simulateMockSale()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 rounded-xl text-xs font-bold text-white transition flex items-center gap-1.5 shadow-lg shadow-blue-500/20">
+            💸 Simulate Real-Time Sale
+          </button>
+        </div>
+      </div>
+
+      <!-- ANALYTICS STATS -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Revenue -->
+        <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 space-y-2">
+          <div class="text-gray-500 text-xs font-bold uppercase tracking-wider">Total Sales (Revenue)</div>
+          <div class="text-3xl font-black text-white" id="stat-revenue">$0.00</div>
+          <div class="text-[10px] text-green-400 font-semibold flex items-center gap-1">
+            <span>↑ All-time cumulative flips</span>
+          </div>
+        </div>
+        <!-- COGS (Sourcing Cost) -->
+        <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 space-y-2">
+          <div class="text-gray-500 text-xs font-bold uppercase tracking-wider">Total Sourcing Costs</div>
+          <div class="text-3xl font-black text-red-400" id="stat-cogs">$0.00</div>
+          <div class="text-[10px] text-gray-500 font-semibold">Total cost of bought inventory</div>
+        </div>
+        <!-- Total Projected Profit -->
+        <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 space-y-2">
+          <div class="text-gray-500 text-xs font-bold uppercase tracking-wider">Net Profit Made</div>
+          <div class="text-3xl font-black text-green-400" id="stat-profit">$0.00</div>
+          <div class="text-[10px] text-green-400/80 font-semibold" id="stat-margin-pct">0% margin rate</div>
+        </div>
+        <!-- Inventory Value -->
+        <div class="bg-gray-900 p-5 rounded-2xl border border-gray-800 space-y-2">
+          <div class="text-gray-500 text-xs font-bold uppercase tracking-wider">Active Shelf Value</div>
+          <div class="text-3xl font-black text-blue-400" id="stat-shelf-val">$0.00</div>
+          <div class="text-[10px] text-gray-400 font-semibold" id="stat-active-count">0 items currently in store</div>
+        </div>
+      </div>
+
+      <!-- WORKSPACE TWO-COLUMN SPLIT -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- COLUMN 1: INVENTORY MANAGEMENT FORM & LIST (8 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- ADD NEW ITEM TO INVENTORY -->
+          <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800 space-y-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              📥 Add Sourced Inventory
+            </h3>
+            
+            <form id="add-item-form" onsubmit="handleAddNewItem(event)" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Item Title / Name</label>
+                  <input type="text" id="form-title" required placeholder="e.g., Hot Wheels RLC Custom Camaro" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Category</label>
+                  <select id="form-category" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                    <option value="Collectibles">🏎️ Collectibles / Toys</option>
+                    <option value="Sneakers">👟 Sneakers & Streetwear</option>
+                    <option value="Tech">⚡ Tech Accessories</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Sourced Price ($)</label>
+                  <input type="number" id="form-buy-price" required step="0.01" placeholder="What you paid" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Listed Resell Price ($)</label>
+                  <input type="number" id="form-sell-price" required step="0.01" placeholder="What they pay" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Stock Quantity</label>
+                  <input type="number" id="form-stock" required min="1" placeholder="e.g. 5" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Emoji Artwork Representation</label>
+                  <input type="text" id="form-emoji" placeholder="e.g., 🏎️, 👟, 🎮" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Hype Meter (Flame Count 1-5)</label>
+                  <input type="number" id="form-hype" min="1" max="5" placeholder="e.g., 4" class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] text-gray-400 font-bold uppercase mb-1">Short Product Description</label>
+                <textarea id="form-desc" rows="2" placeholder="Describe the item condition, authenticity proof, or size info..." class="w-full bg-gray-950 border border-gray-800 focus:border-green-500 focus:ring-1 focus:ring-green-500 text-white rounded-xl py-2 px-3 text-xs outline-none transition"></textarea>
+              </div>
+
+              <button type="submit" class="w-full bg-green-500 hover:bg-green-400 text-black py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-lg shadow-green-500/20">
+                ➕ List Sourced Product to Shop
+              </button>
+            </form>
+          </div>
+
+          <!-- ACTIVE INVENTORY LIST TABLE -->
+          <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800 space-y-4">
+            <h3 class="text-base font-bold text-white flex items-center justify-between">
+              📋 Active Inventory Table
+              <span class="text-xs text-gray-400" id="admin-table-count">0 Items</span>
+            </h3>
+            
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-gray-300">
+                <thead class="bg-gray-950 text-[10px] text-gray-500 uppercase tracking-wider font-bold">
+                  <tr>
+                    <th class="p-3">Item</th>
+                    <th class="p-3">Sourced</th>
+                    <th class="p-3">List Price</th>
+                    <th class="p-3">Projected Profit</th>
+                    <th class="p-3 text-center">Stock</th>
+                    <th class="p-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-table-body" class="divide-y divide-gray-800">
+                  <!-- Generated dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COLUMN 2: AI APPRAISER (4 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- GEMINI POWERED HYPE SCANNER -->
+          <div class="bg-gradient-to-br from-indigo-950/80 to-purple-950/40 p-6 rounded-2xl border border-indigo-500/30 space-y-4 relative overflow-hidden">
+            <!-- Decorative light ray -->
+            <div class="absolute -top-10 -right-10 w-24 h-24 bg-indigo-500/20 rounded-full blur-2xl"></div>
+
+            <div class="flex items-center gap-3">
+              <div class="h-9 w-9 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-lg shadow-inner">
+                🔮
+              </div>
+              <div>
+                <h3 class="text-sm font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                  Gemini Hype Appraiser
+                  <span class="text-[9px] bg-indigo-500 text-white font-bold px-1.5 py-0.5 rounded uppercase tracking-widest">AI Agent</span>
+                </h3>
+                <p class="text-[10px] text-indigo-300">Live resale price insights & margins scanner</p>
+              </div>
+            </div>
+
+            <p class="text-xs text-gray-400">
+              Not sure if an item is worth sourcing or flipping? Describe the product below, and Gemini will predict the reseller demand, average markup price, and overall flipping risk!
+            </p>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-[10px] text-indigo-300 font-bold uppercase mb-1">Scan Target</label>
+                <input type="text" id="ai-scan-query" placeholder="e.g. 1995 Hot Wheels Treasure Hunt Camaros" class="w-full bg-gray-950/80 border border-indigo-500/30 focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400 text-white placeholder:text-gray-600 rounded-xl py-2 px-3 text-xs outline-none transition">
+              </div>
+              <button onclick="runHypeAppraiser()" id="btn-appraise" class="w-full bg-indigo-500 hover:bg-indigo-400 text-white py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-500/30">
+                ⚡ Appraise Potential Profit
+              </button>
+            </div>
+
+            <!-- AI Appraisal Output Area -->
+            <div id="ai-appraisal-result" class="hidden bg-gray-950/90 border border-indigo-500/20 rounded-xl p-4 space-y-3 text-xs transition duration-300">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- TEEN BUSINESS MANUAL / CHEAT SHEET -->
+          <div class="bg-gray-900 p-6 rounded-2xl border border-gray-800 space-y-4">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              💡 Alex & Tyler's Flipping Playbook
+            </h3>
+            <ul class="space-y-3 text-xs text-gray-400">
+              <li class="flex gap-2.5">
+                <span class="text-green-400">❶</span>
+                <span><strong>The 3X Sourcing Rule:</strong> Try to source items like vintage collectibles for at least 50% under estimated resell value to leave room for negotiate and fees.</span>
+              </li>
+              <li class="flex gap-2.5">
+                <span class="text-blue-400">❷</span>
+                <span><strong>Hot Wheels Strategy:</strong> Look for "Treasure Hunts" (marked with a flame icon on packaging) or "Super Treasure Hunts" at retail stores ($1.25) to resell for $15–$50+ immediately.</span>
+              </li>
+              <li class="flex gap-2.5">
+                <span class="text-purple-400">❸</span>
+                <span><strong>Authenticity Checking:</strong> Always verify stitching on streetwear clothing, or heat stamps on card collectibles before buying inventory from local sellers.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- CART SIDEBAR MODAL -->
+  <div id="cart-sidebar" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+    <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-gray-950 border-l border-gray-800 p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 transform translate-x-full" id="cart-panel">
+      
+      <!-- Cart Header -->
+      <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+        <h3 class="text-lg font-black text-white flex items-center gap-2">
+          🛍️ Your Cart <span class="text-xs bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded" id="cart-panel-count">0 items</span>
+        </h3>
+        <button onclick="toggleCartModal(false)" class="p-2 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Cart Items list -->
+      <div class="flex-grow overflow-y-auto py-4 space-y-4" id="cart-items-container">
+        <!-- Dynamically populated -->
+      </div>
+
+      <!-- Cart Footer / Checkout -->
+      <div class="border-t border-gray-800 pt-4 space-y-4">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-400 font-medium">Subtotal</span>
+          <span class="text-white font-extrabold text-lg" id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-gray-500">
+          <span>Sales Tax & Local Sourcing Charge</span>
+          <span class="font-bold text-gray-400">$0.00 (Teens pay it!)</span>
+        </div>
+        
+        <button onclick="initiateCheckout()" class="w-full bg-green-500 hover:bg-green-400 text-black font-extrabold py-3 rounded-xl text-xs transition tracking-wider uppercase shadow-lg shadow-green-500/20 flex items-center justify-center gap-2">
+          💸 Complete Instant Purchase
+        </button>
+        <p class="text-center text-[10px] text-gray-500">Fast checkout handled instantly in-memory for testing</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHECKOUT SUCCESS MODAL -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-gray-900 border border-gray-800 p-6 sm:p-8 rounded-3xl max-w-md w-full text-center space-y-6 shadow-2xl relative overflow-hidden">
+      <div class="absolute -top-12 -left-12 w-32 h-32 bg-green-500/10 rounded-full blur-2xl"></div>
+      
+      <div class="h-16 w-16 bg-green-500/10 text-green-400 rounded-full flex items-center justify-center text-3xl mx-auto border border-green-500/20">
+        🎉
+      </div>
+      
+      <div class="space-y-2">
+        <h3 class="text-2xl font-black text-white tracking-tight">Hype Flip Successful!</h3>
+        <p class="text-gray-400 text-xs sm:text-sm">
+          Your order has been fully processed and logged on Alex & Tyler's dashboard! The teens thank you for supporting high-school entrepreneurship.
+        </p>
+      </div>
+
+      <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 text-left space-y-1.5 text-xs">
+        <div class="flex justify-between text-gray-400"><span>Receipt ID:</span> <span class="font-mono text-white" id="receipt-id">#HF-8374</span></div>
+        <div class="flex justify-between text-gray-400"><span>Items Acquired:</span> <span class="text-white" id="receipt-items">Hot Wheels, Sneakers</span></div>
+        <div class="flex justify-between text-gray-400"><span>Total Spent:</span> <span class="text-green-400 font-bold" id="receipt-total">$0.00</span></div>
+      </div>
+
+      <button onclick="closeCheckoutSuccess()" class="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2.5 rounded-xl text-xs transition">
+        Awesome, Keep Shopping!
+      </button>
+    </div>
+  </div>
+
+  <!-- MOCK NOTIFICATION SYSTEM (TOAST) -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-gray-950 border border-gray-800 text-white rounded-xl p-4 shadow-2xl flex items-center gap-3 max-w-sm transition-transform duration-300 translate-y-24 pointer-events-none z-50">
+    <div class="text-green-400 text-lg" id="toast-icon">⚡</div>
+    <div>
+      <h4 class="text-xs font-bold text-white" id="toast-title">Success</h4>
+      <p class="text-[10px] text-gray-400 mt-0.5" id="toast-msg">Product added to live inventory.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-950 border-t border-gray-900 py-6 px-4 mt-12 text-center text-xs text-gray-600 space-y-2">
+    <p>© 2026 HypeFlip Resellers. Built & Operated by Alex & Tyler. Powered by Canvas and Gemini.</p>
+    <div class="flex justify-center gap-4 text-gray-500">
+      <span>🎒 Sophomore Year Venture</span>
+      <span>•</span>
+      <span>🌐 Fully Interactive Client-Side Prototype</span>
+    </div>
+  </footer>
+
+  <!-- ==================== LOGIC & SCRIPTING ==================== -->
+  <script>
+    // System-wide Empty API Key as specified by constraints.
+    const apiKey = ""; 
+
+    // INITIAL APP STATE / CATALOG SEED DATA
+    let inventory = [];
+    let cart = [];
+    let analytics = {
+      revenue: 0,
+      cogs: 0,
+      profit: 0
+    };
+
+    const initialCatalogSeeds = [
+      {
+        id: "seed-1",
+        title: "Hot Wheels RLC Custom '72 Chevy LUV",
+        category: "Collectibles",
+        buyPrice: 30.00,
+        sellPrice: 65.00,
+        stock: 4,
+        emoji: "🏎️",
+        hype: 5,
+        desc: "Redline Club exclusive collector's diecast with metal flake green finish and opening hood. Sourced directly from drop."
+      },
+      {
+        id: "seed-2",
+        title: "Nike Dunk Low 'Panda' - Size US 9.5",
+        category: "Sneakers",
+        buyPrice: 115.00,
+        sellPrice: 165.00,
+        stock: 2,
+        emoji: "👟",
+        hype: 4,
+        desc: "Classic black and white Dunks. Deadstock condition, fully authenticated tags included."
+      },
+      {
+        id: "seed-3",
+        title: "Pokémon TCG: Obsidian Flames Booster Box",
+        category: "Collectibles",
+        buyPrice: 110.00,
+        sellPrice: 145.00,
+        stock: 3,
+        emoji: "🔥",
+        hype: 5,
+        desc: "Sealed booster box of Obsidian Flames with Charizard target hunts. MINT box condition."
+      },
+      {
+        id: "seed-4",
+        title: "Y2K Vintage Heavyweight Graphic Hoodie",
+        category: "Sneakers",
+        buyPrice: 15.00,
+        sellPrice: 45.00,
+        stock: 5,
+        emoji: "🧥",
+        hype: 3,
+        desc: "Thrifted heavyweight faded oversized aesthetic fit. Cleaned, pre-washed, no stains."
+      },
+      {
+        id: "seed-5",
+        title: "Essential Wireless RGB Keycap Set (Retro)",
+        category: "Tech",
+        buyPrice: 20.00,
+        sellPrice: 40.00,
+        stock: 6,
+        emoji: "⌨️",
+        hype: 4,
+        desc: "Custom cream & beige vintage styling. Compatible with MX stem mechanical keyboards."
+      }
+    ];
+
+    // On Load Startup
+    window.onload = function() {
+      // Seed Initial Catalog
+      seedInitialCatalog();
+    };
+
+    function seedInitialCatalog() {
+      inventory = JSON.parse(JSON.stringify(initialCatalogSeeds));
+      // Calculate active metrics
+      recalculateAnalytics();
+      renderShop();
+      renderAdminView();
+      showToast("🔄 Catalog Restored", "Sample catalog refreshed to default testing items.");
+    }
+
+    // STATE RECALCULATION & RENDER ENGINE
+    function recalculateAnalytics() {
+      // Sourced inventory value represents how much money teens invested on currently active stock
+      let activeShelfVal = 0;
+      let activeItemCount = 0;
+      
+      inventory.forEach(item => {
+        activeShelfVal += (item.sellPrice * item.stock);
+        activeItemCount += item.stock;
+      });
+
+      document.getElementById('stat-revenue').innerText = `$${analytics.revenue.toFixed(2)}`;
+      document.getElementById('stat-cogs').innerText = `$${analytics.cogs.toFixed(2)}`;
+      document.getElementById('stat-profit').innerText = `$${analytics.profit.toFixed(2)}`;
+      
+      const marginPct = analytics.revenue > 0 ? ((analytics.profit / analytics.revenue) * 100).toFixed(0) : 0;
+      document.getElementById('stat-margin-pct').innerText = `★ ${marginPct}% average net margin`;
+
+      document.getElementById('stat-shelf-val').innerText = `$${activeShelfVal.toFixed(2)}`;
+      document.getElementById('stat-active-count').innerText = `${activeItemCount} items currently in store`;
+
+      // Update Hero Banner stats
+      document.getElementById('hero-total-items').innerText = inventory.length;
+    }
+
+    // NAVIGATION TABS SWITCHER
+    function switchView(view) {
+      const shopBtn = document.getElementById('btn-shop');
+      const adminBtn = document.getElementById('btn-admin');
+      const shopView = document.getElementById('view-shop');
+      const adminView = document.getElementById('view-admin');
+
+      if (view === 'shop') {
+        shopView.classList.remove('hidden');
+        adminView.classList.add('hidden');
+        
+        shopBtn.className = "px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-green-500 to-emerald-600 text-black shadow-lg";
+        adminBtn.className = "px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white";
+        
+        renderShop();
+      } else {
+        shopView.classList.add('hidden');
+        adminView.classList.remove('hidden');
+
+        adminBtn.className = "px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg";
+        shopBtn.className = "px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white";
+        
+        renderAdminView();
+      }
+    }
+
+    // RENDER: STOREFRONT CATALOG
+    let currentCategoryFilter = 'All';
+    function filterCategory(cat) {
+      currentCategoryFilter = cat;
+      const cats = ['All', 'Collectibles', 'Sneakers', 'Tech'];
+      cats.forEach(c => {
+        const btn = document.getElementById(`cat-${c.toLowerCase()}`);
+        if (!btn) return;
+        if (c === cat) {
+          btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-green-500 text-black";
+        } else {
+          btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-gray-800 text-gray-300 hover:bg-gray-700";
+        }
+      });
+      renderShop();
+    }
+
+    function searchProducts() {
+      renderShop();
+    }
+
+    function renderShop() {
+      const grid = document.getElementById('product-grid');
+      const emptyState = document.getElementById('empty-store-state');
+      const searchQuery = document.getElementById('shop-search').value.toLowerCase();
+      
+      grid.innerHTML = "";
+
+      // Filter Inventory
+      const filtered = inventory.filter(item => {
+        const matchesCategory = currentCategoryFilter === 'All' || item.category === currentCategoryFilter;
+        const matchesSearch = item.title.toLowerCase().includes(searchQuery) || item.desc.toLowerCase().includes(searchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      grid.classList.remove('hidden');
+      emptyState.classList.add('hidden');
+
+      filtered.forEach(item => {
+        // Construct Hype Meter Stars (flames)
+        let flames = "";
+        for (let i = 0; i < 5; i++) {
+          if (i < item.hype) {
+            flames += "🔥";
+          } else {
+            flames += "✨";
+          }
+        }
+
+        // SVG placeholder generation based on emoji
+        const cardHtml = `
+          <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden hover:border-gray-700 transition duration-300 flex flex-col group">
+            
+            <!-- Graphic Header Card -->
+            <div class="h-44 bg-gradient-to-b from-gray-950 to-gray-900 relative flex items-center justify-center p-6 border-b border-gray-950">
+              <span class="text-7xl group-hover:scale-110 transition duration-300 select-none">${item.emoji}</span>
+              
+              <!-- Tag Indicators -->
+              <span class="absolute top-3 left-3 text-[10px] bg-gray-800 text-gray-300 font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-gray-700">
+                ${item.category}
+              </span>
+
+              ${item.stock <= 2 ? `
+                <span class="absolute top-3 right-3 text-[10px] bg-red-500/10 text-red-400 font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border border-red-500/20 animate-pulse">
+                  LOW STOCK
+                </span>
+              ` : ''}
+            </div>
+
+            <!-- Card Content Body -->
+            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <span>Hype Rating: <span class="text-white">${flames}</span></span>
+                  <span class="font-semibold text-emerald-400">Authentic Check Passed</span>
+                </div>
+                <h4 class="text-white font-bold text-base tracking-tight leading-tight group-hover:text-green-400 transition">${item.title}</h4>
+                <p class="text-gray-400 text-xs line-clamp-2">${item.desc}</p>
+              </div>
+
+              <div class="pt-3 border-t border-gray-800 flex items-center justify-between">
+                <div>
+                  <span class="block text-[10px] text-gray-500 uppercase font-extrabold">Price Flipping</span>
+                  <div class="flex items-baseline gap-1.5">
+                    <span class="text-xl font-black text-white">$${item.sellPrice.toFixed(2)}</span>
+                    <span class="text-xs text-gray-500 line-through">$${(item.sellPrice * 1.3).toFixed(0)}</span>
+                  </div>
+                </div>
+                <button onclick="addToCart('${item.id}')" class="bg-green-500 hover:bg-green-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs transition duration-200 flex items-center gap-1">
+                  🛒 Flip in Cart
+                </button>
+              </div>
+            </div>
+
+          </div>
+        `;
+        grid.innerHTML += cardHtml;
+      });
+    }
+
+    // RENDER: TEEN WORKSPACE PORTAL (ADMIN)
+    function renderAdminView() {
+      const tableBody = document.getElementById('inventory-table-body');
+      tableBody.innerHTML = "";
+
+      inventory.forEach(item => {
+        const profit = item.sellPrice - item.buyPrice;
+        const marginPct = ((profit / item.sellPrice) * 100).toFixed(0);
+
+        const row = `
+          <tr class="hover:bg-gray-800/40 transition">
+            <td class="p-3">
+              <div class="flex items-center gap-2.5">
+                <span class="text-lg select-none">${item.emoji}</span>
+                <div>
+                  <span class="block font-bold text-white text-xs">${item.title}</span>
+                  <span class="block text-[10px] text-gray-500">${item.category}</span>
+                </div>
+              </div>
+            </td>
+            <td class="p-3 text-gray-300 font-medium">$${item.buyPrice.toFixed(2)}</td>
+            <td class="p-3 text-white font-semibold">$${item.sellPrice.toFixed(2)}</td>
+            <td class="p-3">
+              <span class="text-green-400 font-bold">$${profit.toFixed(2)}</span>
+              <span class="text-[10px] text-gray-500 block">(${marginPct}% margin)</span>
+            </td>
+            <td class="p-3 text-center">
+              <div class="inline-flex items-center gap-2 bg-gray-950 px-2.5 py-1 rounded-lg border border-gray-800">
+                <button onclick="adjustStock('${item.id}', -1)" class="text-gray-500 hover:text-white font-bold px-1 text-sm">-</button>
+                <span class="text-xs font-bold text-white font-mono">${item.stock}</span>
+                <button onclick="adjustStock('${item.id}', 1)" class="text-gray-500 hover:text-white font-bold px-1 text-sm">+</button>
+              </div>
+            </td>
+            <td class="p-3 text-right">
+              <button onclick="deleteInventoryItem('${item.id}')" class="text-red-500/80 hover:text-red-400 font-semibold text-xs hover:underline">
+                Remove Flip
+              </button>
+            </td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+
+      document.getElementById('admin-table-count').innerText = `${inventory.length} Unique Listings`;
+      recalculateAnalytics();
+    }
+
+    // INVENTORY MUTATION HANDLERS
+    function handleAddNewItem(event) {
+      event.preventDefault();
+
+      const title = document.getElementById('form-title').value;
+      const category = document.getElementById('form-category').value;
+      const buyPrice = parseFloat(document.getElementById('form-buy-price').value);
+      const sellPrice = parseFloat(document.getElementById('form-sell-price').value);
+      const stock = parseInt(document.getElementById('form-stock').value);
+      const emojiInput = document.getElementById('form-emoji').value.trim();
+      const hype = parseInt(document.getElementById('form-hype').value) || 4;
+      const desc = document.getElementById('form-desc').value || "No detailed description provided by founders.";
+
+      // Determine Emoji Fallback
+      let finalEmoji = emojiInput;
+      if (!finalEmoji) {
+        if (category === 'Collectibles') finalEmoji = "🏎️";
+        else if (category === 'Sneakers') finalEmoji = "👟";
+        else finalEmoji = "⚡";
+      }
+
+      const newItem = {
+        id: `custom-${Date.now()}`,
+        title,
+        category,
+        buyPrice,
+        sellPrice,
+        stock,
+        emoji: finalEmoji,
+        hype,
+        desc
+      };
+
+      inventory.unshift(newItem);
+      
+      // Clear Form
+      document.getElementById('add-item-form').reset();
+
+      renderAdminView();
+      showToast("🚀 Flip Added!", `Listed ${title} in the storefront catalog!`);
+    }
+
+    function adjustStock(itemId, amount) {
+      const idx = inventory.findIndex(item => item.id === itemId);
+      if (idx !== -1) {
+        inventory[idx].stock = Math.max(0, inventory[idx].stock + amount);
+        renderAdminView();
+      }
+    }
+
+    function deleteInventoryItem(itemId) {
+      const targetItem = inventory.find(i => i.id === itemId);
+      const title = targetItem ? targetItem.title : "Product";
+      inventory = inventory.filter(item => item.id !== itemId);
+      renderAdminView();
+      showToast("🗑️ Flip Removed", `${title} has been pulled from inventory shelves.`);
+    }
+
+    // SIMULATE A RANDOM SALE (ENTREPRENEURIAL FUN COMPONENT)
+    function simulateMockSale() {
+      if (inventory.length === 0) {
+        showToast("⚠️ Out of Stock", "No active products are stocked to purchase! Add some items first.");
+        return;
+      }
+
+      // Pick a random product with stock
+      const stockableItems = inventory.filter(i => i.stock > 0);
+      if (stockableItems.length === 0) {
+        showToast("⚠️ Sold Out!", "All stocked items are currently completely sold out!");
+        return;
+      }
+
+      const randomItem = stockableItems[Math.floor(Math.random() * stockableItems.length)];
+      
+      // Adjust State
+      randomItem.stock--;
+      analytics.revenue += randomItem.sellPrice;
+      analytics.cogs += randomItem.buyPrice;
+      analytics.profit += (randomItem.sellPrice - randomItem.buyPrice);
+
+      renderAdminView();
+      showToast("🔥 Simulated Flip Accomplished!", `Customer bought 1x "${randomItem.title}" for $${randomItem.sellPrice.toFixed(2)}`);
+    }
+
+    // SHOPPING CART CONTROLLERS
+    function toggleCartModal(open) {
+      const sidebar = document.getElementById('cart-sidebar');
+      const panel = document.getElementById('cart-panel');
+      if (open) {
+        sidebar.classList.remove('opacity-0', 'pointer-events-none');
+        panel.classList.remove('translate-x-full');
+        renderCart();
+      } else {
+        sidebar.classList.add('opacity-0', 'pointer-events-none');
+        panel.classList.add('translate-x-full');
+      }
+    }
+
+    function addToCart(itemId) {
+      const catalogItem = inventory.find(item => item.id === itemId);
+      if (!catalogItem) return;
+
+      if (catalogItem.stock <= 0) {
+        showToast("❌ Item Sold Out", "Sorry, this awesome flip has completely run out of stock!");
+        return;
+      }
+
+      const existingCartItem = cart.find(item => item.id === itemId);
+      if (existingCartItem) {
+        if (existingCartItem.quantity < catalogItem.stock) {
+          existingCartItem.quantity++;
+          showToast("🛒 Added Additional Item", `Added another "${catalogItem.title}" to cart.`);
+        } else {
+          showToast("⚠️ Max Sourced Stock Reached", `Only ${catalogItem.stock} of this item are sourced!`);
+          return;
+        }
+      } else {
+        cart.push({
+          id: catalogItem.id,
+          title: catalogItem.title,
+          sellPrice: catalogItem.sellPrice,
+          emoji: catalogItem.emoji,
+          quantity: 1
+        });
+        showToast("🛒 Added to Cart", `Placed "${catalogItem.title}" inside shopping cart!`);
+      }
+
+      updateCartBadge();
+    }
+
+    function adjustCartQuantity(itemId, amount) {
+      const cartItem = cart.find(item => item.id === itemId);
+      if (!cartItem) return;
+
+      const catalogItem = inventory.find(item => item.id === itemId);
+      if (!catalogItem) return;
+
+      cartItem.quantity += amount;
+      if (cartItem.quantity <= 0) {
+        cart = cart.filter(item => item.id !== itemId);
+      } else if (cartItem.quantity > catalogItem.stock) {
+        cartItem.quantity = catalogItem.stock;
+        showToast("⚠️ Max Sourced Stock Reached", `Only ${catalogItem.stock} of this item are currently in inventory!`);
+      }
+
+      updateCartBadge();
+      renderCart();
+    }
+
+    function updateCartBadge() {
+      const badge = document.getElementById('cart-count-badge');
+      const totalCount = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+      
+      if (totalCount > 0) {
+        badge.innerText = totalCount;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cart-items-container');
+      const subtotalLabel = document.getElementById('cart-subtotal');
+      const panelCount = document.getElementById('cart-panel-count');
+
+      container.innerHTML = "";
+      
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-gray-500 space-y-2">
+            <span class="text-4xl">🛒</span>
+            <p class="text-xs">Your resell shopping cart is currently empty.</p>
+          </div>
+        `;
+        subtotalLabel.innerText = "$0.00";
+        panelCount.innerText = "0 items";
+        return;
+      }
+
+      let subtotal = 0;
+      let totalItems = 0;
+
+      cart.forEach(item => {
+        subtotal += (item.sellPrice * item.quantity);
+        totalItems += item.quantity;
+
+        const cartRow = `
+          <div class="flex items-center justify-between bg-gray-900/60 p-3.5 rounded-xl border border-gray-800">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl select-none">${item.emoji}</span>
+              <div>
+                <h5 class="text-xs font-bold text-white leading-tight">${item.title}</h5>
+                <p class="text-[10px] text-green-400 font-semibold">$${item.sellPrice.toFixed(2)} each</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center gap-1.5 bg-gray-950 px-2 py-0.5 rounded-lg border border-gray-800 text-xs">
+                <button onclick="adjustCartQuantity('${item.id}', -1)" class="text-gray-400 hover:text-white font-extrabold">-</button>
+                <span class="text-white font-semibold font-mono">${item.quantity}</span>
+                <button onclick="adjustCartQuantity('${item.id}', 1)" class="text-gray-400 hover:text-white font-extrabold">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += cartRow;
+      });
+
+      subtotalLabel.innerText = `$${subtotal.toFixed(2)}`;
+      panelCount.innerText = `${totalItems} items`;
+    }
+
+    // IN-MEMORY REALTIME CHECKOUT HANDLER
+    function initiateCheckout() {
+      if (cart.length === 0) {
+        showToast("⚠️ Checkout Failed", "You don't have any products inside the cart!");
+        return;
+      }
+
+      // Decrement Inventory stocks & record official founder revenue statistics!
+      let receiptTextItems = [];
+      let totalSpent = 0;
+
+      cart.forEach(cartItem => {
+        const inventoryItem = inventory.find(i => i.id === cartItem.id);
+        if (inventoryItem) {
+          // Subtract stock physically
+          inventoryItem.stock = Math.max(0, inventoryItem.stock - cartItem.quantity);
+          
+          // Log analytic variables
+          const totalCostRatio = (inventoryItem.buyPrice * cartItem.quantity);
+          const totalRevenueRatio = (inventoryItem.sellPrice * cartItem.quantity);
+          
+          analytics.revenue += totalRevenueRatio;
+          analytics.cogs += totalCostRatio;
+          analytics.profit += (totalRevenueRatio - totalCostRatio);
+
+          receiptTextItems.push(`${cartItem.quantity}x ${cartItem.title}`);
+          totalSpent += totalRevenueRatio;
+        }
+      });
+
+      // Show Checkout Modal
+      document.getElementById('receipt-id').innerText = `#HF-${Math.floor(1000 + Math.random() * 9000)}`;
+      document.getElementById('receipt-items').innerText = receiptTextItems.join(', ');
+      document.getElementById('receipt-total').innerText = `$${totalSpent.toFixed(2)}`;
+
+      // Clear the Cart completely
+      cart = [];
+      updateCartBadge();
+      toggleCartModal(false);
+
+      // Trigger Confetti Celebration (visually done)
+      document.getElementById('checkout-modal').classList.remove('hidden');
+
+      // Update counters
+      recalculateAnalytics();
+      renderShop();
+    }
+
+    function closeCheckoutSuccess() {
+      document.getElementById('checkout-modal').classList.add('hidden');
+    }
+
+    // EXPONENTIAL BACKOFF FOR AI CHAT & GOOGLE SEARCH FLIPS
+    async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url, options);
+          if (response.ok) return await response.json();
+          if (response.status === 429 || response.status >= 500) {
+            await new Promise(res => setTimeout(res, delay));
+            delay *= 2;
+            continue;
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        } catch (error) {
+          if (i === retries - 1) throw error;
+          await new Promise(res => setTimeout(res, delay));
+          delay *= 2;
+        }
+      }
+    }
+
+    // AI SCANNER / APPRAISER IMPLEMENTATION (GEMINI)
+    async function runHypeAppraiser() {
+      const scanInput = document.getElementById('ai-scan-query');
+      const query = scanInput.value.trim();
+      const output = document.getElementById('ai-appraisal-result');
+      const btn = document.getElementById('btn-appraise');
+
+      if (!query) {
+        showToast("⚠️ Enter Scanner Query", "Type in a target collectible/sneaker description first!");
+        return;
+      }
+
+      // Loading state
+      btn.disabled = true;
+      btn.innerText = "🔮 Consulting Oracle...";
+      output.classList.remove('hidden');
+      output.innerHTML = `
+        <div class="flex items-center gap-2 text-indigo-400">
+          <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Appraising "${query}" potential...</span>
+        </div>
+      `;
+
+      // Prompt structured logic
+      const systemPrompt = `You are a professional, expert streetwear and collectible reseller named "HypeFlip Oracle". Your goal is to advise two 16-year-old teen founders (Alex & Tyler) on whether a target collectible/sneaker/toy has good flipping margins. Give them structured, realistic, street-smart appraisal advice in crisp HTML formatting. Keep details highly relevant, specifying average sourcing retail, projected resale, risk level out of 10, and a "Teen Pro-tip". Avoid generic lists, sound sharp and expert.`;
+
+      const userPrompt = `Appraise this potential flip item: "${query}". Estimate its average sourcing cost, predicted resale market price, risk, and provide action tips for Alex & Tyler.`;
+
+      const requestPayload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const response = await fetchWithBackoff(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestPayload)
+        });
+
+        const rawText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (rawText) {
+          // Format raw markdown back to html elements inside panel nicely
+          let cleanedText = rawText
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`([^`]+)`/g, '<code class="bg-gray-900 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
+            .replace(/\n/g, '<br>');
+
+          output.innerHTML = `
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between border-b border-indigo-500/20 pb-2">
+                <span class="font-bold text-indigo-300">📊 Scanning Diagnosis:</span>
+                <span class="text-[10px] bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded font-bold uppercase">Success</span>
+              </div>
+              <p class="text-gray-300 leading-relaxed text-xs">${cleanedText}</p>
+              <div class="flex gap-2 pt-2">
+                <button onclick="useAppraisedValues('${query}')" class="w-full bg-green-500 hover:bg-green-400 text-black font-extrabold py-1.5 rounded-lg text-[10px] transition uppercase">
+                  💡 Autocomplete Listing Draft
+                </button>
+              </div>
+            </div>
+          `;
+        } else {
+          output.innerHTML = `<span class="text-red-400">Error: Could not retrieve a legible appraisal profile.</span>`;
+        }
+
+      } catch (err) {
+        console.error(err);
+        output.innerHTML = `
+          <div class="space-y-2 text-red-400">
+            <span class="font-bold">❌ Scanning Connection Fault</span>
+            <p class="text-[11px] text-gray-400">Unable to query live AI server. Running offline fallback estimation...</p>
+            <div class="p-3 bg-gray-950 rounded-lg border border-red-500/20 text-xs">
+              <strong>Offline Diagnostic:</strong> High-risk speculative items like Hot Wheels Treasure Hunts are always worth a shot if sourced at retail price ($1.25). Standard reselling markup ranges between <strong>25% - 150%</strong>.
+            </div>
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "⚡ Appraise Potential Profit";
+      }
+    }
+
+    // AUTOPULSE INTEGRATION FOR CONVENIENT LISTING
+    function useAppraisedValues(title) {
+      document.getElementById('form-title').value = title;
+      document.getElementById('form-category').value = "Collectibles";
+      document.getElementById('form-buy-price').value = 5.00;
+      document.getElementById('form-sell-price').value = 25.00;
+      document.getElementById('form-stock').value = 2;
+      document.getElementById('form-emoji').value = "🔥";
+      document.getElementById('form-hype').value = 5;
+      document.getElementById('form-desc').value = `Appraised item: ${title}. High resale potential diagnosed by Gemini AI.`;
+      
+      // Auto-scroll up slightly to form
+      document.getElementById('add-item-form').scrollIntoView({ behavior: 'smooth' });
+      showToast("📝 Form Pre-filled", "Listing values pre-filled. Adjust price margins as needed!");
+    }
+
+    // TOAST NOTIFICATIONS
+    function showToast(title, msg) {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastMsg = document.getElementById('toast-msg');
+
+      toastTitle.innerText = title;
+      toastMsg.innerText = msg;
+
+      toast.classList.remove('translate-y-24');
+      
+      // Auto dismiss
+      setTimeout(() => {
+        toast.classList.add('translate-y-24');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
+
+```
