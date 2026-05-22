@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +21,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
     body {
@@ -51,30 +50,8 @@
       background: #4B5563;
     }
   </style>
-
-  <!-- LIVE ERROR CAPTURE SYSTEM (For debugging live GitHub deployments) -->
-  <script>
-    window.onerror = function(message, source, lineno, colno, error) {
-      const debugPanel = document.getElementById('debug-error-console');
-      if (debugPanel) {
-        debugPanel.classList.remove('hidden');
-        document.getElementById('debug-err-msg').innerText = 
-          "Error: " + message + "\nSource: " + source + "\nLine: " + lineno + ":" + colno;
-      }
-      return false; 
-    };
-  </script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-green-500 selection:text-black">
-
-  <!-- LIVE DEPLOYMENT DEBUG OVERLAY (Hidden by default, shows only on script crash) -->
-  <div id="debug-error-console" class="hidden fixed top-4 left-4 right-4 z-50 bg-red-950 border-2 border-red-500 text-white p-4 rounded-2xl shadow-2xl">
-    <div class="flex items-center gap-2 mb-2 text-red-400 font-bold">
-      <span>⚠️ System Crash Detected (Live Debug Tool)</span>
-    </div>
-    <pre id="debug-err-msg" class="text-xs bg-black/50 p-3 rounded-lg overflow-x-auto font-mono text-red-300"></pre>
-    <p class="text-[10px] text-gray-400 mt-2">This panel is only visible during active errors. Use this details output to pinpoint syntax blocks.</p>
-  </div>
 
   <!-- TOP MARQUEE BANNER -->
   <div class="bg-gradient-to-r from-green-500 via-emerald-600 to-blue-600 py-1.5 px-4 text-center text-xs font-bold text-black tracking-widest uppercase overflow-hidden whitespace-nowrap">
@@ -529,18 +506,18 @@
   <!-- ==================== LOGIC & SCRIPTING ==================== -->
   <script>
     // System-wide Empty API Key as specified by constraints.
-    const apiKey = ""; 
+    var apiKey = ""; 
 
     // INITIAL APP STATE / CATALOG SEED DATA
-    let inventory = [];
-    let cart = [];
-    let analytics = {
+    var inventory = [];
+    var cart = [];
+    var analytics = {
       revenue: 0,
       cogs: 0,
       profit: 0
     };
 
-    const initialCatalogSeeds = [
+    var initialCatalogSeeds = [
       {
         id: "seed-1",
         title: "Hot Wheels RLC Custom '72 Chevy LUV",
@@ -598,19 +575,15 @@
       }
     ];
 
-    // DOM READY STARTUP (Wrapped in Try-Catch to prevent freezing on any edge cases)
-    document.addEventListener("DOMContentLoaded", function() {
+    // IMMEDIATE SAFE EXECUTION
+    // Self-invoking function fires instantly upon parser read because scripts sit inside the body base.
+    (function() {
       try {
         seedInitialCatalog();
       } catch (e) {
         console.error("Initialization Failed:", e);
-        const debugPanel = document.getElementById('debug-error-console');
-        if (debugPanel) {
-          debugPanel.classList.remove('hidden');
-          document.getElementById('debug-err-msg').innerText = "Init Fail: " + e.message + "\nStack: " + e.stack;
-        }
       }
-    });
+    })();
 
     function seedInitialCatalog() {
       inventory = JSON.parse(JSON.stringify(initialCatalogSeeds));
@@ -622,30 +595,30 @@
 
     // STATE RECALCULATION & RENDER ENGINE
     function recalculateAnalytics() {
-      let activeShelfVal = 0;
-      let activeItemCount = 0;
+      var activeShelfVal = 0;
+      var activeItemCount = 0;
       
-      inventory.forEach(item => {
-        const itemStock = Number(item.stock) || 0;
-        const itemSell = Number(item.sellPrice) || 0;
+      inventory.forEach(function(item) {
+        var itemStock = Number(item.stock) || 0;
+        var itemSell = Number(item.sellPrice) || 0;
         activeShelfVal += (itemSell * itemStock);
         activeItemCount += itemStock;
       });
 
-      const revEl = document.getElementById('stat-revenue');
-      const cogsEl = document.getElementById('stat-cogs');
-      const profEl = document.getElementById('stat-profit');
-      const marginEl = document.getElementById('stat-margin-pct');
-      const shelfEl = document.getElementById('stat-shelf-val');
-      const countEl = document.getElementById('stat-active-count');
-      const heroEl = document.getElementById('hero-total-items');
+      var revEl = document.getElementById('stat-revenue');
+      var cogsEl = document.getElementById('stat-cogs');
+      var profEl = document.getElementById('stat-profit');
+      var marginEl = document.getElementById('stat-margin-pct');
+      var shelfEl = document.getElementById('stat-shelf-val');
+      var countEl = document.getElementById('stat-active-count');
+      var heroEl = document.getElementById('hero-total-items');
 
       if (revEl) revEl.innerText = "$" + analytics.revenue.toFixed(2);
       if (cogsEl) cogsEl.innerText = "$" + analytics.cogs.toFixed(2);
       if (profEl) profEl.innerText = "$" + analytics.profit.toFixed(2);
       
       if (marginEl) {
-        const marginPct = analytics.revenue > 0 ? ((analytics.profit / analytics.revenue) * 100).toFixed(0) : 0;
+        var marginPct = analytics.revenue > 0 ? ((analytics.profit / analytics.revenue) * 100).toFixed(0) : 0;
         marginEl.innerText = "★ " + marginPct + "% average net margin";
       }
 
@@ -656,10 +629,10 @@
 
     // NAVIGATION TABS SWITCHER
     function switchView(view) {
-      const shopBtn = document.getElementById('btn-shop');
-      const adminBtn = document.getElementById('btn-admin');
-      const shopView = document.getElementById('view-shop');
-      const adminView = document.getElementById('view-admin');
+      var shopBtn = document.getElementById('btn-shop');
+      var adminBtn = document.getElementById('btn-admin');
+      var shopView = document.getElementById('view-shop');
+      var adminView = document.getElementById('view-admin');
 
       if (view === 'shop') {
         if (shopView) shopView.classList.remove('hidden');
@@ -680,13 +653,13 @@
       }
     }
 
-    // RENDER: STOREFRONT CATALOG
-    let currentCategoryFilter = 'All';
+    // RENDER: STOREFRONT CATALOG (All templates constructed via bulletproof standard strings)
+    var currentCategoryFilter = 'All';
     function filterCategory(cat) {
       currentCategoryFilter = cat;
-      const cats = ['All', 'Collectibles', 'Sneakers', 'Tech'];
-      cats.forEach(c => {
-        const btn = document.getElementById("cat-" + c.toLowerCase());
+      var cats = ['All', 'Collectibles', 'Sneakers', 'Tech'];
+      cats.forEach(function(c) {
+        var btn = document.getElementById("cat-" + c.toLowerCase());
         if (!btn) return;
         if (c === cat) {
           btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-green-500 text-black";
@@ -702,18 +675,18 @@
     }
 
     function renderShop() {
-      const grid = document.getElementById('product-grid');
-      const emptyState = document.getElementById('empty-store-state');
+      var grid = document.getElementById('product-grid');
+      var emptyState = document.getElementById('empty-store-state');
       if (!grid || !emptyState) return;
 
-      const searchInput = document.getElementById('shop-search');
-      const searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
+      var searchInput = document.getElementById('shop-search');
+      var searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
       
       grid.innerHTML = "";
 
-      const filtered = inventory.filter(item => {
-        const matchesCategory = currentCategoryFilter === 'All' || item.category === currentCategoryFilter;
-        const matchesSearch = item.title.toLowerCase().includes(searchQuery) || item.desc.toLowerCase().includes(searchQuery);
+      var filtered = inventory.filter(function(item) {
+        var matchesCategory = currentCategoryFilter === 'All' || item.category === currentCategoryFilter;
+        var matchesSearch = item.title.toLowerCase().indexOf(searchQuery) !== -1 || item.desc.toLowerCase().indexOf(searchQuery) !== -1;
         return matchesCategory && matchesSearch;
       });
 
@@ -726,110 +699,105 @@
       grid.classList.remove('hidden');
       emptyState.classList.add('hidden');
 
-      filtered.forEach(item => {
-        let flames = "";
-        const hypeCount = Number(item.hype) || 0;
-        for (let i = 0; i < 5; i++) {
+      for (var k = 0; k < filtered.length; k++) {
+        var item = filtered[k];
+        var flames = "";
+        var hypeCount = Number(item.hype) || 0;
+        for (var i = 0; i < 5; i++) {
           flames += (i < hypeCount) ? "🔥" : "✨";
         }
 
-        const lowStockBadge = item.stock <= 2 
-          ? `<span class="absolute top-3 right-3 text-[10px] bg-red-500/10 text-red-400 font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border border-red-500/20 animate-pulse">LOW STOCK</span>` 
-          : '';
+        var lowStockBadge = "";
+        if (item.stock <= 2) {
+          lowStockBadge = '<span class="absolute top-3 right-3 text-[10px] bg-red-500/10 text-red-400 font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border border-red-500/20 animate-pulse">LOW STOCK</span>';
+        }
 
-        const sellPrice = Number(item.sellPrice) || 0;
+        var sellPrice = Number(item.sellPrice) || 0;
 
-        const cardHtml = `
-          <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden hover:border-gray-700 transition duration-300 flex flex-col group">
-            
-            <div class="h-44 bg-gradient-to-b from-gray-950 to-gray-900 relative flex items-center justify-center p-6 border-b border-gray-950">
-              <span class="text-7xl group-hover:scale-110 transition duration-300 select-none">${item.emoji}</span>
-              
-              <span class="absolute top-3 left-3 text-[10px] bg-gray-800 text-gray-300 font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-gray-700">
-                ${item.category}
-              </span>
-
-              ${lowStockBadge}
-            </div>
-
-            <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
-              <div class="space-y-1.5">
-                <div class="flex items-center justify-between text-xs text-gray-500">
-                  <span>Hype Rating: <span class="text-white">${flames}</span></span>
-                  <span class="font-semibold text-emerald-400">Authentic Check Passed</span>
-                </div>
-                <h4 class="text-white font-bold text-base tracking-tight leading-tight group-hover:text-green-400 transition">${item.title}</h4>
-                <p class="text-gray-400 text-xs line-clamp-2">${item.desc}</p>
-              </div>
-
-              <div class="pt-3 border-t border-gray-800 flex items-center justify-between">
-                <div>
-                  <span class="block text-[10px] text-gray-500 uppercase font-extrabold">Price Flipping</span>
-                  <div class="flex items-baseline gap-1.5">
-                    <span class="text-xl font-black text-white">$${sellPrice.toFixed(2)}</span>
-                    <span class="text-xs text-gray-500 line-through">$${(sellPrice * 1.3).toFixed(0)}</span>
-                  </div>
-                </div>
-                <button onclick="addToCart('${item.id}')" class="bg-green-500 hover:bg-green-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs transition duration-200 flex items-center gap-1">
-                  🛒 Flip in Cart
-                </button>
-              </div>
-            </div>
-
-          </div>
-        `;
+        var cardHtml = 
+          '<div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden hover:border-gray-700 transition duration-300 flex flex-col group">' +
+            '<div class="h-44 bg-gradient-to-b from-gray-950 to-gray-900 relative flex items-center justify-center p-6 border-b border-gray-950">' +
+              '<span class="text-7xl group-hover:scale-110 transition duration-300 select-none">' + item.emoji + '</span>' +
+              '<span class="absolute top-3 left-3 text-[10px] bg-gray-800 text-gray-300 font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-gray-700">' +
+                item.category +
+              '</span>' +
+              lowStockBadge +
+            '</div>' +
+            '<div class="p-5 flex-grow flex flex-col justify-between space-y-4">' +
+              '<div class="space-y-1.5">' +
+                '<div class="flex items-center justify-between text-xs text-gray-500">' +
+                  '<span>Hype Rating: <span class="text-white">' + flames + '</span></span>' +
+                  '<span class="font-semibold text-emerald-400">Authentic Check Passed</span>' +
+                '</div>' +
+                '<h4 class="text-white font-bold text-base tracking-tight leading-tight group-hover:text-green-400 transition">' + item.title + '</h4>' +
+                '<p class="text-gray-400 text-xs line-clamp-2">' + item.desc + '</p>' +
+              '</div>' +
+              '<div class="pt-3 border-t border-gray-800 flex items-center justify-between">' +
+                '<div>' +
+                  '<span class="block text-[10px] text-gray-500 uppercase font-extrabold">Price Flipping</span>' +
+                  '<div class="flex items-baseline gap-1.5">' +
+                    '<span class="text-xl font-black text-white">$' + sellPrice.toFixed(2) + '</span>' +
+                    '<span class="text-xs text-gray-500 line-through">$' + (sellPrice * 1.3).toFixed(0) + '</span>' +
+                  '</div>' +
+                '</div>' +
+                '<button onclick="addToCart(\'' + item.id + '\')" class="bg-green-500 hover:bg-green-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs transition duration-200 flex items-center gap-1">' +
+                  '🛒 Flip in Cart' +
+                '</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
         grid.innerHTML += cardHtml;
-      });
+      }
     }
 
     // RENDER: TEEN WORKSPACE PORTAL (ADMIN)
     function renderAdminView() {
-      const tableBody = document.getElementById('inventory-table-body');
+      var tableBody = document.getElementById('inventory-table-body');
       if (!tableBody) return;
       
       tableBody.innerHTML = "";
 
-      inventory.forEach(item => {
-        const itemBuy = Number(item.buyPrice) || 0;
-        const itemSell = Number(item.sellPrice) || 0;
-        const profit = itemSell - itemBuy;
-        const marginPct = itemSell > 0 ? ((profit / itemSell) * 100).toFixed(0) : 0;
+      for (var k = 0; k < inventory.length; k++) {
+        var item = inventory[k];
+        var itemBuy = Number(item.buyPrice) || 0;
+        var itemSell = Number(item.sellPrice) || 0;
+        var profit = itemSell - itemBuy;
+        var marginPct = itemSell > 0 ? ((profit / itemSell) * 100).toFixed(0) : 0;
 
-        const row = `
-          <tr class="hover:bg-gray-800/40 transition">
-            <td class="p-3">
-              <div class="flex items-center gap-2.5">
-                <span class="text-lg select-none">${item.emoji}</span>
-                <div>
-                  <span class="block font-bold text-white text-xs">${item.title}</span>
-                  <span class="block text-[10px] text-gray-500">${item.category}</span>
-                </div>
-              </div>
-            </td>
-            <td class="p-3 text-gray-300 font-medium">$${itemBuy.toFixed(2)}</td>
-            <td class="p-3 text-white font-semibold">$${itemSell.toFixed(2)}</td>
-            <td class="p-3">
-              <span class="text-green-400 font-bold">$${profit.toFixed(2)}</span>
-              <span class="text-[10px] text-gray-500 block">(${marginPct}% margin)</span>
-            </td>
-            <td class="p-3 text-center">
-              <div class="inline-flex items-center gap-2 bg-gray-950 px-2.5 py-1 rounded-lg border border-gray-800">
-                <button onclick="adjustStock('${item.id}', -1)" class="text-gray-500 hover:text-white font-bold px-1 text-sm">-</button>
-                <span class="text-xs font-bold text-white font-mono">${item.stock}</span>
-                <button onclick="adjustStock('${item.id}', 1)" class="text-gray-500 hover:text-white font-bold px-1 text-sm">+</button>
-              </div>
-            </td>
-            <td class="p-3 text-right">
-              <button onclick="deleteInventoryItem('${item.id}')" class="text-red-500/80 hover:text-red-400 font-semibold text-xs hover:underline">
-                Remove Flip
-              </button>
-            </td>
-          </tr>
-        `;
+        var row = 
+          '<tr class="hover:bg-gray-800/40 transition">' +
+            '<td class="p-3">' +
+              '<div class="flex items-center gap-2.5">' +
+                '<span class="text-lg select-none">' + item.emoji + '</span>' +
+                '<div>' +
+                  '<span class="block font-bold text-white text-xs">' + item.title + '</span>' +
+                  '<span class="block text-[10px] text-gray-500">' + item.category + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</td>' +
+            '<td class="p-3 text-gray-300 font-medium">$' + itemBuy.toFixed(2) + '</td>' +
+            <td class="p-3 text-white font-semibold">$' + itemSell.toFixed(2) + '</td>' +
+            '<td class="p-3">' +
+              '<span class="text-green-400 font-bold">$' + profit.toFixed(2) + '</span>' +
+              '<span class="text-[10px] text-gray-500 block">(' + marginPct + '% margin)</span>' +
+            '</td>' +
+            '<td class="p-3 text-center">' +
+              '<div class="inline-flex items-center gap-2 bg-gray-950 px-2.5 py-1 rounded-lg border border-gray-800">' +
+                '<button onclick="adjustStock(\'' + item.id + '\', -1)" class="text-gray-500 hover:text-white font-bold px-1 text-sm">-</button>' +
+                '<span class="text-xs font-bold text-white font-mono">' + item.stock + '</span>' +
+                '<button onclick="adjustStock(\'' + item.id + '\', 1)" class="text-gray-500 hover:text-white font-bold px-1 text-sm">+</button>' +
+              '</div>' +
+            '</td>' +
+            '<td class="p-3 text-right">' +
+              '<button onclick="deleteInventoryItem(\'' + item.id + '\')" class="text-red-500/80 hover:text-red-400 font-semibold text-xs hover:underline">' +
+                'Remove Flip' +
+              '</button>' +
+            '</td>' +
+          '</tr>';
         tableBody.innerHTML += row;
-      });
+      }
 
-      const tableCountEl = document.getElementById('admin-table-count');
+      var tableCountEl = document.getElementById('admin-table-count');
       if (tableCountEl) tableCountEl.innerText = inventory.length + " Unique Listings";
       recalculateAnalytics();
     }
@@ -838,23 +806,23 @@
     function handleAddNewItem(event) {
       event.preventDefault();
 
-      const title = document.getElementById('form-title').value;
-      const category = document.getElementById('form-category').value;
-      const buyPrice = parseFloat(document.getElementById('form-buy-price').value);
-      const sellPrice = parseFloat(document.getElementById('form-sell-price').value);
-      const stock = parseInt(document.getElementById('form-stock').value);
-      const emojiInput = document.getElementById('form-emoji').value.trim();
-      const hype = parseInt(document.getElementById('form-hype').value) || 4;
-      const desc = document.getElementById('form-desc').value || "No detailed description provided by founders.";
+      var title = document.getElementById('form-title').value;
+      var category = document.getElementById('form-category').value;
+      var buyPrice = parseFloat(document.getElementById('form-buy-price').value);
+      var sellPrice = parseFloat(document.getElementById('form-sell-price').value);
+      var stock = parseInt(document.getElementById('form-stock').value);
+      var emojiInput = document.getElementById('form-emoji').value.trim();
+      var hype = parseInt(document.getElementById('form-hype').value) || 4;
+      var desc = document.getElementById('form-desc').value || "No detailed description provided by founders.";
 
-      let finalEmoji = emojiInput;
+      var finalEmoji = emojiInput;
       if (!finalEmoji) {
         if (category === 'Collectibles') finalEmoji = "🏎️";
         else if (category === 'Sneakers') finalEmoji = "👟";
         else finalEmoji = "⚡";
       }
 
-      const newItem = {
+      var newItem = {
         id: "custom-" + Date.now(),
         title: title,
         category: category,
@@ -874,7 +842,7 @@
     }
 
     function adjustStock(itemId, amount) {
-      const idx = inventory.findIndex(item => item.id === itemId);
+      var idx = inventory.findIndex(function(item) { return item.id === itemId; });
       if (idx !== -1) {
         inventory[idx].stock = Math.max(0, inventory[idx].stock + amount);
         renderAdminView();
@@ -882,9 +850,9 @@
     }
 
     function deleteInventoryItem(itemId) {
-      const targetItem = inventory.find(i => i.id === itemId);
-      const title = targetItem ? targetItem.title : "Product";
-      inventory = inventory.filter(item => item.id !== itemId);
+      var targetItem = inventory.find(function(i) { return i.id === itemId; });
+      var title = targetItem ? targetItem.title : "Product";
+      inventory = inventory.filter(function(item) { return item.id !== itemId; });
       renderAdminView();
       showToast("🗑️ Flip Removed", title + " has been pulled from inventory shelves.");
     }
@@ -896,13 +864,13 @@
         return;
       }
 
-      const stockableItems = inventory.filter(i => i.stock > 0);
+      var stockableItems = inventory.filter(function(i) { return i.stock > 0; });
       if (stockableItems.length === 0) {
         showToast("⚠️ Sold Out!", "All stocked items are currently completely sold out!");
         return;
       }
 
-      const randomItem = stockableItems[Math.floor(Math.random() * stockableItems.length)];
+      var randomItem = stockableItems[Math.floor(Math.random() * stockableItems.length)];
       
       randomItem.stock--;
       analytics.revenue += randomItem.sellPrice;
@@ -915,8 +883,8 @@
 
     // SHOPPING CART CONTROLLERS
     function toggleCartModal(open) {
-      const sidebar = document.getElementById('cart-sidebar');
-      const panel = document.getElementById('cart-panel');
+      var sidebar = document.getElementById('cart-sidebar');
+      var panel = document.getElementById('cart-panel');
       if (!sidebar || !panel) return;
       
       if (open) {
@@ -930,7 +898,7 @@
     }
 
     function addToCart(itemId) {
-      const catalogItem = inventory.find(item => item.id === itemId);
+      var catalogItem = inventory.find(function(item) { return item.id === itemId; });
       if (!catalogItem) return;
 
       if (catalogItem.stock <= 0) {
@@ -938,7 +906,7 @@
         return;
       }
 
-      const existingCartItem = cart.find(item => item.id === itemId);
+      var existingCartItem = cart.find(function(item) { return item.id === itemId; });
       if (existingCartItem) {
         if (existingCartItem.quantity < catalogItem.stock) {
           existingCartItem.quantity++;
@@ -962,15 +930,15 @@
     }
 
     function adjustCartQuantity(itemId, amount) {
-      const cartItem = cart.find(item => item.id === itemId);
+      var cartItem = cart.find(function(item) { return item.id === itemId; });
       if (!cartItem) return;
 
-      const catalogItem = inventory.find(item => item.id === itemId);
+      var catalogItem = inventory.find(function(item) { return item.id === itemId; });
       if (!catalogItem) return;
 
       cartItem.quantity += amount;
       if (cartItem.quantity <= 0) {
-        cart = cart.filter(item => item.id !== itemId);
+        cart = cart.filter(function(item) { return item.id !== itemId; });
       } else if (cartItem.quantity > catalogItem.stock) {
         cartItem.quantity = catalogItem.stock;
         showToast("⚠️ Max Sourced Stock Reached", "Only " + catalogItem.stock + " of this item are currently in inventory!");
@@ -981,10 +949,10 @@
     }
 
     function updateCartBadge() {
-      const badge = document.getElementById('cart-count-badge');
+      var badge = document.getElementById('cart-count-badge');
       if (!badge) return;
       
-      const totalCount = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+      var totalCount = cart.reduce(function(acc, curr) { return acc + curr.quantity; }, 0);
       if (totalCount > 0) {
         badge.innerText = totalCount;
         badge.classList.remove('hidden');
@@ -994,52 +962,52 @@
     }
 
     function renderCart() {
-      const container = document.getElementById('cart-items-container');
-      const subtotalLabel = document.getElementById('cart-subtotal');
-      const panelCount = document.getElementById('cart-panel-count');
+      var container = document.getElementById('cart-items-container');
+      var subtotalLabel = document.getElementById('cart-subtotal');
+      var panelCount = document.getElementById('cart-panel-count');
       if (!container || !subtotalLabel || !panelCount) return;
 
       container.innerHTML = "";
       
       if (cart.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-12 text-gray-500 space-y-2">
-            <span class="text-4xl">🛒</span>
-            <p class="text-xs">Your resell shopping cart is currently empty.</p>
-          </div>
-        `;
+        container.innerHTML = 
+          '<div class="text-center py-12 text-gray-500 space-y-2">' +
+            '<span class="text-4xl">🛒</span>' +
+            '<p class="text-xs">Your resell shopping cart is currently empty.</p>' +
+          '</div>';
         subtotalLabel.innerText = "$0.00";
         panelCount.innerText = "0 items";
         return;
       }
 
-      let subtotal = 0;
-      let totalItems = 0;
+      var subtotal = 0;
+      var totalItems = 0;
 
-      cart.forEach(item => {
-        subtotal += (item.sellPrice * item.quantity);
+      for (var k = 0; k < cart.length; k++) {
+        var item = cart[k];
+        var itemSell = Number(item.sellPrice) || 0;
+        subtotal += (itemSell * item.quantity);
         totalItems += item.quantity;
 
-        const cartRow = `
-          <div class="flex items-center justify-between bg-gray-900/60 p-3.5 rounded-xl border border-gray-800">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl select-none">${item.emoji}</span>
-              <div>
-                <h5 class="text-xs font-bold text-white leading-tight">${item.title}</h5>
-                <p class="text-[10px] text-green-400 font-semibold">$${item.sellPrice.toFixed(2)} each</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="flex items-center gap-1.5 bg-gray-950 px-2 py-0.5 rounded-lg border border-gray-800 text-xs">
-                <button onclick="adjustCartQuantity('${item.id}', -1)" class="text-gray-400 hover:text-white font-extrabold">-</button>
-                <span class="text-white font-semibold font-mono">${item.quantity}</span>
-                <button onclick="adjustCartQuantity('${item.id}', 1)" class="text-gray-400 hover:text-white font-extrabold">+</button>
-              </div>
-            </div>
-          </div>
-        `;
+        var cartRow = 
+          '<div class="flex items-center justify-between bg-gray-900/60 p-3.5 rounded-xl border border-gray-800">' +
+            '<div class="flex items-center gap-3">' +
+              '<span class="text-2xl select-none">' + item.emoji + '</span>' +
+              '<div>' +
+                '<h5 class="text-xs font-bold text-white leading-tight">' + item.title + '</h5>' +
+                '<p class="text-[10px] text-green-400 font-semibold">$' + itemSell.toFixed(2) + ' each</p>' +
+              '</div>' +
+            '</div>' +
+            '<div class="flex items-center gap-2">' +
+              '<div class="flex items-center gap-1.5 bg-gray-950 px-2 py-0.5 rounded-lg border border-gray-800 text-xs">' +
+                '<button onclick="adjustCartQuantity(\'' + item.id + '\', -1)" class="text-gray-400 hover:text-white font-extrabold">-</button>' +
+                '<span class="text-white font-semibold font-mono">' + item.quantity + '</span>' +
+                '<button onclick="adjustCartQuantity(\'' + item.id + '\', 1)" class="text-gray-400 hover:text-white font-extrabold">+</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
         container.innerHTML += cartRow;
-      });
+      }
 
       subtotalLabel.innerText = "$" + subtotal.toFixed(2);
       panelCount.innerText = totalItems + " items";
@@ -1051,16 +1019,16 @@
         return;
       }
 
-      let receiptTextItems = [];
-      let totalSpent = 0;
+      var receiptTextItems = [];
+      var totalSpent = 0;
 
-      cart.forEach(cartItem => {
-        const inventoryItem = inventory.find(i => i.id === cartItem.id);
+      cart.forEach(function(cartItem) {
+        var inventoryItem = inventory.find(function(i) { return i.id === cartItem.id; });
         if (inventoryItem) {
           inventoryItem.stock = Math.max(0, inventoryItem.stock - cartItem.quantity);
           
-          const totalCostRatio = (inventoryItem.buyPrice * cartItem.quantity);
-          const totalRevenueRatio = (inventoryItem.sellPrice * cartItem.quantity);
+          var totalCostRatio = (inventoryItem.buyPrice * cartItem.quantity);
+          var totalRevenueRatio = (inventoryItem.sellPrice * cartItem.quantity);
           
           analytics.revenue += totalRevenueRatio;
           analytics.cogs += totalCostRatio;
@@ -1071,10 +1039,10 @@
         }
       });
 
-      const recIdEl = document.getElementById('receipt-id');
-      const recItemsEl = document.getElementById('receipt-items');
-      const recTotEl = document.getElementById('receipt-total');
-      const checkoutModal = document.getElementById('checkout-modal');
+      var recIdEl = document.getElementById('receipt-id');
+      var recItemsEl = document.getElementById('receipt-items');
+      var recTotEl = document.getElementById('receipt-total');
+      var checkoutModal = document.getElementById('checkout-modal');
 
       if (recIdEl) recIdEl.innerText = "#HF-" + Math.floor(1000 + Math.random() * 9000);
       if (recItemsEl) recItemsEl.innerText = receiptTextItems.join(', ');
@@ -1091,36 +1059,38 @@
     }
 
     function closeCheckoutSuccess() {
-      const checkoutModal = document.getElementById('checkout-modal');
+      var checkoutModal = document.getElementById('checkout-modal');
       if (checkoutModal) checkoutModal.classList.add('hidden');
     }
 
     // EXPONENTIAL BACKOFF API FETCH CALLS
-    async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
-      for (let i = 0; i < retries; i++) {
+    async function fetchWithBackoff(url, options, retries, delay) {
+      var r = retries || 5;
+      var d = delay || 1000;
+      for (var i = 0; i < r; i++) {
         try {
-          const response = await fetch(url, options);
+          var response = await fetch(url, options);
           if (response.ok) return await response.json();
           if (response.status === 429 || response.status >= 500) {
-            await new Promise(res => setTimeout(res, delay));
-            delay *= 2;
+            await new Promise(function(res) { setTimeout(res, d); });
+            d *= 2;
             continue;
           }
           throw new Error("HTTP error! status: " + response.status);
         } catch (error) {
-          if (i === retries - 1) throw error;
-          await new Promise(res => setTimeout(res, delay));
-          delay *= 2;
+          if (i === r - 1) throw error;
+          await new Promise(function(res) { setTimeout(res, d); });
+          d *= 2;
         }
       }
     }
 
     // AI SCANNER / APPRAISER IMPLEMENTATION (GEMINI)
     async function runHypeAppraiser() {
-      const scanInput = document.getElementById('ai-scan-query');
-      const query = scanInput ? scanInput.value.trim() : "";
-      const output = document.getElementById('ai-appraisal-result');
-      const btn = document.getElementById('btn-appraise');
+      var scanInput = document.getElementById('ai-scan-query');
+      var query = scanInput ? scanInput.value.trim() : "";
+      var output = document.getElementById('ai-appraisal-result');
+      var btn = document.getElementById('btn-appraise');
 
       if (!query) {
         showToast("⚠️ Enter Scanner Query", "Type in a target collectible/sneaker description first!");
@@ -1134,81 +1104,77 @@
       
       if (output) {
         output.classList.remove('hidden');
-        output.innerHTML = `
-          <div class="flex items-center gap-2 text-indigo-400">
-            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span>Appraising "${query}" potential...</span>
-          </div>
-        `;
+        output.innerHTML = 
+          '<div class="flex items-center gap-2 text-indigo-400">' +
+            '<svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">' +
+              '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>' +
+              '<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>' +
+            '</svg>' +
+            '<span>Appraising "' + query + '" potential...</span>' +
+          '</div>';
       }
 
-      const systemPrompt = "You are a professional, expert streetwear and collectible reseller named \"HypeFlip Oracle\". Your goal is to advise two 16-year-old teen founders (Alex & Tyler) on whether a target collectible/sneaker/toy has good flipping margins. Give them structured, realistic, street-smart appraisal advice in crisp HTML formatting. Keep details highly relevant, specifying average sourcing retail, projected resale, risk level out of 10, and a \"Teen Pro-tip\". Avoid generic lists, sound sharp and expert.";
+      var systemPrompt = "You are a professional, expert streetwear and collectible reseller named \"HypeFlip Oracle\". Your goal is to advise two 16-year-old teen founders (Alex & Tyler) on whether a target collectible/sneaker/toy has good flipping margins. Give them structured, realistic, street-smart appraisal advice in crisp HTML formatting. Keep details highly relevant, specifying average sourcing retail, projected resale, risk level out of 10, and a \"Teen Pro-tip\". Avoid generic lists, sound sharp and expert.";
 
-      const userPrompt = "Appraise this potential flip item: \"" + query + "\". Estimate its average sourcing cost, predicted resale market price, risk, and provide action tips for Alex & Tyler.";
+      var userPrompt = "Appraise this potential flip item: \"" + query + "\". Estimate its average sourcing cost, predicted resale market price, risk, and provide action tips for Alex & Tyler.";
 
-      const requestPayload = {
+      var requestPayload = {
         contents: [{ parts: [{ text: userPrompt }] }],
         systemInstruction: { parts: [{ text: systemPrompt }] }
       };
 
       try {
-        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=" + apiKey;
-        const response = await fetchWithBackoff(url, {
+        var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=" + apiKey;
+        var response = await fetchWithBackoff(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(requestPayload)
         });
 
-        const rawText = response.candidates?.[0]?.content?.parts?.[0]?.text;
+        var rawText = response.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (rawText && output) {
-          // Robust regular expression class constructs to completely prevent Jekyll/Minifier inline comment bugs
-          const boldRegex = new RegExp('\\*\\*(.*?)\\*\\*', 'g');
-          const italicRegex = new RegExp('\\*(.*?)\\*', 'g');
-          const codeRegex = new RegExp('`([^`]+)`', 'g');
-          const newlineRegex = new RegExp('\\n', 'g');
+          var boldRegex = new RegExp('\\*\\*(.*?)\\*\\*', 'g');
+          var italicRegex = new RegExp('\\*(.*?)\\*', 'g');
+          var codeRegex = new RegExp('\\x60([^\\x60]+)\\x60', 'g');
+          var newlineRegex = new RegExp('\\n', 'g');
 
-          let cleanedText = rawText
+          var cleanedText = rawText
             .replace(boldRegex, '<strong>$1</strong>')
             .replace(italicRegex, '<em>$1</em>')
             .replace(codeRegex, '<code class="bg-gray-900 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
             .replace(newlineRegex, '<br>');
 
-          const escapedQuery = query.replace(/['"]/g, "");
+          var escapedQuery = query.replace(/['"]/g, "");
 
-          output.innerHTML = `
-            <div class="space-y-2.5">
-              <div class="flex items-center justify-between border-b border-indigo-500/20 pb-2">
-                <span class="font-bold text-indigo-300">📊 Scanning Diagnosis:</span>
-                <span class="text-[10px] bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded font-bold uppercase">Success</span>
-              </div>
-              <p class="text-gray-300 leading-relaxed text-xs">${cleanedText}</p>
-              <div class="flex gap-2 pt-2">
-                <button onclick="useAppraisedValues('${escapedQuery}')" class="w-full bg-green-500 hover:bg-green-400 text-black font-extrabold py-1.5 rounded-lg text-[10px] transition uppercase">
-                  💡 Autocomplete Listing Draft
-                </button>
-              </div>
-            </div>
-          `;
+          output.innerHTML = 
+            '<div class="space-y-2.5">' +
+              '<div class="flex items-center justify-between border-b border-indigo-500/20 pb-2">' +
+                '<span class="font-bold text-indigo-300">📊 Scanning Diagnosis:</span>' +
+                '<span class="text-[10px] bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded font-bold uppercase">Success</span>' +
+              '</div>' +
+              '<p class="text-gray-300 leading-relaxed text-xs">' + cleanedText + '</p>' +
+              '<div class="flex gap-2 pt-2">' +
+                '<button onclick="useAppraisedValues(\'' + escapedQuery + '\')" class="w-full bg-green-500 hover:bg-green-400 text-black font-extrabold py-1.5 rounded-lg text-[10px] transition uppercase">' +
+                  '💡 Autocomplete Listing Draft' +
+                '</button>' +
+              '</div>' +
+            '</div>';
         } else if (output) {
-          output.innerHTML = `<span class="text-red-400">Error: Could not retrieve a legible appraisal profile.</span>`;
+          output.innerHTML = '<span class="text-red-400">Error: Could not retrieve a legible appraisal profile.</span>';
         }
 
       } catch (err) {
         console.error(err);
         if (output) {
-          output.innerHTML = `
-            <div class="space-y-2 text-red-400">
-              <span class="font-bold">❌ Scanning Connection Fault</span>
-              <p class="text-[11px] text-gray-400">Unable to query live AI server. Running offline fallback estimation...</p>
-              <div class="p-3 bg-gray-950 rounded-lg border border-red-500/20 text-xs">
-                <strong>Offline Diagnostic:</strong> High-risk speculative items like Hot Wheels Treasure Hunts are always worth a shot if sourced at retail price ($1.25). Standard reselling markup ranges between <strong>25% - 150%</strong>.
-              </div>
-            </div>
-          `;
+          output.innerHTML = 
+            '<div class="space-y-2 text-red-400">' +
+              '<span class="font-bold">❌ Scanning Connection Fault</span>' +
+              '<p class="text-[11px] text-gray-400">Unable to query live AI server. Running offline fallback estimation...</p>' +
+              '<div class="p-3 bg-gray-950 rounded-lg border border-red-500/20 text-xs">' +
+                '<strong>Offline Diagnostic:</strong> High-risk speculative items like Hot Wheels Treasure Hunts are always worth a shot if sourced at retail price ($1.25). Standard reselling markup ranges between <strong>25% - 150%</strong>.' +
+              '</div>' +
+            '</div>';
         }
       } finally {
         if (btn) {
@@ -1219,15 +1185,15 @@
     }
 
     function useAppraisedValues(title) {
-      const cleanTitle = title.replace(/['"]/g, "");
-      const fTitle = document.getElementById('form-title');
-      const fCat = document.getElementById('form-category');
-      const fBuy = document.getElementById('form-buy-price');
-      const fSell = document.getElementById('form-sell-price');
-      const fStock = document.getElementById('form-stock');
-      const fEmoji = document.getElementById('form-emoji');
-      const fHype = document.getElementById('form-hype');
-      const fDesc = document.getElementById('form-desc');
+      var cleanTitle = title.replace(/['"]/g, "");
+      var fTitle = document.getElementById('form-title');
+      var fCat = document.getElementById('form-category');
+      var fBuy = document.getElementById('form-buy-price');
+      var fSell = document.getElementById('form-sell-price');
+      var fStock = document.getElementById('form-stock');
+      var fEmoji = document.getElementById('form-emoji');
+      var fHype = document.getElementById('form-hype');
+      var fDesc = document.getElementById('form-desc');
 
       if (fTitle) fTitle.value = cleanTitle;
       if (fCat) fCat.value = "Collectibles";
@@ -1236,18 +1202,18 @@
       if (fStock) fStock.value = 2;
       if (fEmoji) fEmoji.value = "🔥";
       if (fHype) fHype.value = 5;
-      if (fDesc) fDesc.value = "Appraised item: " + cleanTitle + ". High resale potential diagnosed by Gemini AI.";
+      if (fDesc) fDesc.value = "Appraised item: " + cleanTitle + ". Resale potential diagnosed by AI.";
       
-      const form = document.getElementById('add-item-form');
+      var form = document.getElementById('add-item-form');
       if (form) form.scrollIntoView({ behavior: 'smooth' });
       showToast("📝 Form Pre-filled", "Listing values pre-filled. Adjust price margins as needed!");
     }
 
     // TOAST NOTIFICATIONS
     function showToast(title, msg) {
-      const toast = document.getElementById('toast');
-      const toastTitle = document.getElementById('toast-title');
-      const toastMsg = document.getElementById('toast-msg');
+      var toast = document.getElementById('toast');
+      var toastTitle = document.getElementById('toast-title');
+      var toastMsg = document.getElementById('toast-msg');
 
       if (!toast || !toastTitle || !toastMsg) return;
 
@@ -1256,12 +1222,10 @@
 
       toast.classList.remove('translate-y-24');
       
-      setTimeout(() => {
+      setTimeout(function() {
         toast.classList.add('translate-y-24');
       }, 4000);
     }
   </script>
 </body>
-</html>
-
-```
+</html> 
