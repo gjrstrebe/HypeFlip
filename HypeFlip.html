@@ -5,33 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HypeFlip - Sourced by Teens, Curated for You</title>
+  
+  <!-- Fallback basic styling in case Tailwind CDN is delayed or blocked -->
+  <style>
+    body {
+      background-color: #0B0F19 !important;
+      color: #F3F4F6 !important;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #loading-indicator {
+      transition: opacity 0.3s ease;
+    }
+  </style>
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #0B0F19;
-      color: #F3F4F6;
     }
     /* Neon Glow Accents */
     .neon-border {
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.15);
     }
     .neon-text-green {
       color: #22C55E;
-      text-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
-    }
-    .neon-text-blue {
-      color: #3B82F6;
-      text-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
-    }
-    .neon-bg-green {
-      background-color: #22C55E;
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.6);
+      text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
     }
     /* Scrollbar customization */
     ::-webkit-scrollbar {
@@ -48,8 +54,36 @@
       background: #4B5563;
     }
   </style>
+
+  <!-- LIVE ERROR CAPTURE SYSTEM (For debugging live GitHub deployments) -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      const debugPanel = document.getElementById('debug-error-console');
+      if (debugPanel) {
+        debugPanel.classList.remove('hidden');
+        document.getElementById('debug-err-msg').innerText = 
+          `Error: ${message}\nSource: ${source}\nLine: ${lineno}:${colno}`;
+      }
+      return false; 
+    };
+  </script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-green-500 selection:text-black">
+
+  <!-- LIVE DEPLOYMENT DEBUG OVERLAY (Hidden by default, shows only on script crash) -->
+  <div id="debug-error-console" class="hidden fixed top-4 left-4 right-4 z-50 bg-red-950 border-2 border-red-500 text-white p-4 rounded-2xl shadow-2xl">
+    <div class="flex items-center gap-2 mb-2 text-red-400 font-bold">
+      <span>⚠️ System Crash Detected (Live Debug Tool)</span>
+    </div>
+    <pre id="debug-err-msg" class="text-xs bg-black/50 p-3 rounded-lg overflow-x-auto font-mono text-red-300"></pre>
+    <p class="text-[10px] text-gray-400 mt-2">This panel is only visible during active errors. Use this details output to pinpoint syntax blocks.</p>
+  </div>
+
+  <!-- INITIAL PAGE LOAD INDICATOR -->
+  <div id="loading-indicator" class="fixed inset-0 bg-[#0B0F19] z-50 flex flex-col items-center justify-center gap-3">
+    <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-green-500"></div>
+    <span class="text-xs font-bold text-gray-400 tracking-wider">UNBOXING HYPEFLIP ENGINE...</span>
+  </div>
 
   <!-- TOP MARQUEE BANNER -->
   <div class="bg-gradient-to-r from-green-500 via-emerald-600 to-blue-600 py-1.5 px-4 text-center text-xs font-bold text-black tracking-widest uppercase overflow-hidden whitespace-nowrap">
@@ -87,7 +121,7 @@
           </button>
         </div>
 
-        <!-- Cart Trigger (Only visible on Shop Mode) -->
+        <!-- Cart Trigger -->
         <button id="header-cart-btn" onclick="toggleCartModal(true)" class="relative bg-gray-800 hover:bg-gray-700 text-white p-2.5 rounded-xl border border-gray-700 transition flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -107,7 +141,6 @@
       
       <!-- HERO BANNER -->
       <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 to-gray-950 border border-gray-800 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-8 neon-border">
-        <!-- Abstract glowing circles in bg -->
         <div class="absolute -top-12 -left-12 w-48 h-48 bg-green-500/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
 
@@ -129,7 +162,7 @@
           </div>
         </div>
 
-        <!-- Interactive Fast Stats -->
+        <!-- Interactive Stats -->
         <div class="grid grid-cols-2 gap-4 w-full md:w-80 relative z-10">
           <div class="bg-gray-900/60 backdrop-blur border border-gray-800 p-4 rounded-2xl text-center">
             <div class="text-3xl font-black text-green-400" id="hero-total-items">5</div>
@@ -350,7 +383,6 @@
           
           <!-- GEMINI POWERED HYPE SCANNER -->
           <div class="bg-gradient-to-br from-indigo-950/80 to-purple-950/40 p-6 rounded-2xl border border-indigo-500/30 space-y-4 relative overflow-hidden">
-            <!-- Decorative light ray -->
             <div class="absolute -top-10 -right-10 w-24 h-24 bg-indigo-500/20 rounded-full blur-2xl"></div>
 
             <div class="flex items-center gap-3">
@@ -575,15 +607,21 @@
       }
     ];
 
-    // On Load Startup
-    window.onload = function() {
+    // DOM READY STARTUP (Vastly safer for deployment than window.onload)
+    document.addEventListener("DOMContentLoaded", function() {
       // Seed Initial Catalog
       seedInitialCatalog();
-    };
+      
+      // Dismiss Loading overlay
+      const loader = document.getElementById('loading-indicator');
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.remove(), 300);
+      }
+    });
 
     function seedInitialCatalog() {
       inventory = JSON.parse(JSON.stringify(initialCatalogSeeds));
-      // Calculate active metrics
       recalculateAnalytics();
       renderShop();
       renderAdminView();
@@ -592,7 +630,6 @@
 
     // STATE RECALCULATION & RENDER ENGINE
     function recalculateAnalytics() {
-      // Sourced inventory value represents how much money teens invested on currently active stock
       let activeShelfVal = 0;
       let activeItemCount = 0;
       
@@ -601,18 +638,26 @@
         activeItemCount += item.stock;
       });
 
-      document.getElementById('stat-revenue').innerText = `$${analytics.revenue.toFixed(2)}`;
-      document.getElementById('stat-cogs').innerText = `$${analytics.cogs.toFixed(2)}`;
-      document.getElementById('stat-profit').innerText = `$${analytics.profit.toFixed(2)}`;
+      const revEl = document.getElementById('stat-revenue');
+      const cogsEl = document.getElementById('stat-cogs');
+      const profEl = document.getElementById('stat-profit');
+      const marginEl = document.getElementById('stat-margin-pct');
+      const shelfEl = document.getElementById('stat-shelf-val');
+      const countEl = document.getElementById('stat-active-count');
+      const heroEl = document.getElementById('hero-total-items');
+
+      if (revEl) revEl.innerText = `$${analytics.revenue.toFixed(2)}`;
+      if (cogsEl) cogsEl.innerText = `$${analytics.cogs.toFixed(2)}`;
+      if (profEl) profEl.innerText = `$${analytics.profit.toFixed(2)}`;
       
-      const marginPct = analytics.revenue > 0 ? ((analytics.profit / analytics.revenue) * 100).toFixed(0) : 0;
-      document.getElementById('stat-margin-pct').innerText = `★ ${marginPct}% average net margin`;
+      if (marginEl) {
+        const marginPct = analytics.revenue > 0 ? ((analytics.profit / analytics.revenue) * 100).toFixed(0) : 0;
+        marginEl.innerText = `★ ${marginPct}% average net margin`;
+      }
 
-      document.getElementById('stat-shelf-val').innerText = `$${activeShelfVal.toFixed(2)}`;
-      document.getElementById('stat-active-count').innerText = `${activeItemCount} items currently in store`;
-
-      // Update Hero Banner stats
-      document.getElementById('hero-total-items').innerText = inventory.length;
+      if (shelfEl) shelfEl.innerText = `$${activeShelfVal.toFixed(2)}`;
+      if (countEl) countEl.innerText = `${activeItemCount} items currently in store`;
+      if (heroEl) heroEl.innerText = inventory.length;
     }
 
     // NAVIGATION TABS SWITCHER
@@ -623,19 +668,19 @@
       const adminView = document.getElementById('view-admin');
 
       if (view === 'shop') {
-        shopView.classList.remove('hidden');
-        adminView.classList.add('hidden');
+        if (shopView) shopView.classList.remove('hidden');
+        if (adminView) adminView.classList.add('hidden');
         
-        shopBtn.className = "px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-green-500 to-emerald-600 text-black shadow-lg";
-        adminBtn.className = "px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white";
+        if (shopBtn) shopBtn.className = "px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-green-500 to-emerald-600 text-black shadow-lg";
+        if (adminBtn) adminBtn.className = "px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white";
         
         renderShop();
       } else {
-        shopView.classList.add('hidden');
-        adminView.classList.remove('hidden');
+        if (shopView) shopView.classList.add('hidden');
+        if (adminView) adminView.classList.remove('hidden');
 
-        adminBtn.className = "px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg";
-        shopBtn.className = "px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white";
+        if (adminBtn) adminBtn.className = "px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all duration-300 bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg";
+        if (shopBtn) shopBtn.className = "px-4 py-2 rounded-lg text-sm font-bold text-gray-400 flex items-center gap-2 transition-all duration-300 hover:text-white";
         
         renderAdminView();
       }
@@ -665,11 +710,13 @@
     function renderShop() {
       const grid = document.getElementById('product-grid');
       const emptyState = document.getElementById('empty-store-state');
-      const searchQuery = document.getElementById('shop-search').value.toLowerCase();
+      if (!grid || !emptyState) return;
+
+      const searchInput = document.getElementById('shop-search');
+      const searchQuery = searchInput ? searchInput.value.toLowerCase() : "";
       
       grid.innerHTML = "";
 
-      // Filter Inventory
       const filtered = inventory.filter(item => {
         const matchesCategory = currentCategoryFilter === 'All' || item.category === currentCategoryFilter;
         const matchesSearch = item.title.toLowerCase().includes(searchQuery) || item.desc.toLowerCase().includes(searchQuery);
@@ -686,37 +733,29 @@
       emptyState.classList.add('hidden');
 
       filtered.forEach(item => {
-        // Construct Hype Meter Stars (flames)
         let flames = "";
         for (let i = 0; i < 5; i++) {
-          if (i < item.hype) {
-            flames += "🔥";
-          } else {
-            flames += "✨";
-          }
+          flames += (i < item.hype) ? "🔥" : "✨";
         }
 
-        // SVG placeholder generation based on emoji
+        // Safer flat template extraction for browser rendering engines
+        const lowStockBadge = item.stock <= 2 
+          ? `<span class="absolute top-3 right-3 text-[10px] bg-red-500/10 text-red-400 font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border border-red-500/20 animate-pulse">LOW STOCK</span>` 
+          : '';
+
         const cardHtml = `
           <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden hover:border-gray-700 transition duration-300 flex flex-col group">
             
-            <!-- Graphic Header Card -->
             <div class="h-44 bg-gradient-to-b from-gray-950 to-gray-900 relative flex items-center justify-center p-6 border-b border-gray-950">
               <span class="text-7xl group-hover:scale-110 transition duration-300 select-none">${item.emoji}</span>
               
-              <!-- Tag Indicators -->
               <span class="absolute top-3 left-3 text-[10px] bg-gray-800 text-gray-300 font-bold uppercase tracking-wider px-2 py-0.5 rounded border border-gray-700">
                 ${item.category}
               </span>
 
-              ${item.stock <= 2 ? `
-                <span class="absolute top-3 right-3 text-[10px] bg-red-500/10 text-red-400 font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border border-red-500/20 animate-pulse">
-                  LOW STOCK
-                </span>
-              ` : ''}
+              ${lowStockBadge}
             </div>
 
-            <!-- Card Content Body -->
             <div class="p-5 flex-grow flex flex-col justify-between space-y-4">
               <div class="space-y-1.5">
                 <div class="flex items-center justify-between text-xs text-gray-500">
@@ -750,6 +789,8 @@
     // RENDER: TEEN WORKSPACE PORTAL (ADMIN)
     function renderAdminView() {
       const tableBody = document.getElementById('inventory-table-body');
+      if (!tableBody) return;
+      
       tableBody.innerHTML = "";
 
       inventory.forEach(item => {
@@ -790,7 +831,8 @@
         tableBody.innerHTML += row;
       });
 
-      document.getElementById('admin-table-count').innerText = `${inventory.length} Unique Listings`;
+      const tableCountEl = document.getElementById('admin-table-count');
+      if (tableCountEl) tableCountEl.innerText = `${inventory.length} Unique Listings`;
       recalculateAnalytics();
     }
 
@@ -807,7 +849,6 @@
       const hype = parseInt(document.getElementById('form-hype').value) || 4;
       const desc = document.getElementById('form-desc').value || "No detailed description provided by founders.";
 
-      // Determine Emoji Fallback
       let finalEmoji = emojiInput;
       if (!finalEmoji) {
         if (category === 'Collectibles') finalEmoji = "🏎️";
@@ -816,20 +857,18 @@
       }
 
       const newItem = {
-        id: `custom-${Date.now()}`,
-        title,
-        category,
-        buyPrice,
-        sellPrice,
-        stock,
+        id: "custom-" + Date.now(),
+        title: title,
+        category: category,
+        buyPrice: buyPrice,
+        sellPrice: sellPrice,
+        stock: stock,
         emoji: finalEmoji,
-        hype,
-        desc
+        hype: hype,
+        desc: desc
       };
 
       inventory.unshift(newItem);
-      
-      // Clear Form
       document.getElementById('add-item-form').reset();
 
       renderAdminView();
@@ -859,7 +898,6 @@
         return;
       }
 
-      // Pick a random product with stock
       const stockableItems = inventory.filter(i => i.stock > 0);
       if (stockableItems.length === 0) {
         showToast("⚠️ Sold Out!", "All stocked items are currently completely sold out!");
@@ -868,7 +906,6 @@
 
       const randomItem = stockableItems[Math.floor(Math.random() * stockableItems.length)];
       
-      // Adjust State
       randomItem.stock--;
       analytics.revenue += randomItem.sellPrice;
       analytics.cogs += randomItem.buyPrice;
@@ -882,6 +919,8 @@
     function toggleCartModal(open) {
       const sidebar = document.getElementById('cart-sidebar');
       const panel = document.getElementById('cart-panel');
+      if (!sidebar || !panel) return;
+      
       if (open) {
         sidebar.classList.remove('opacity-0', 'pointer-events-none');
         panel.classList.remove('translate-x-full');
@@ -945,8 +984,9 @@
 
     function updateCartBadge() {
       const badge = document.getElementById('cart-count-badge');
-      const totalCount = cart.reduce((acc, curr) => acc + curr.quantity, 0);
+      if (!badge) return;
       
+      const totalCount = cart.reduce((acc, curr) => acc + curr.quantity, 0);
       if (totalCount > 0) {
         badge.innerText = totalCount;
         badge.classList.remove('hidden');
@@ -959,6 +999,7 @@
       const container = document.getElementById('cart-items-container');
       const subtotalLabel = document.getElementById('cart-subtotal');
       const panelCount = document.getElementById('cart-panel-count');
+      if (!container || !subtotalLabel || !panelCount) return;
 
       container.innerHTML = "";
       
@@ -1006,24 +1047,20 @@
       panelCount.innerText = `${totalItems} items`;
     }
 
-    // IN-MEMORY REALTIME CHECKOUT HANDLER
     function initiateCheckout() {
       if (cart.length === 0) {
         showToast("⚠️ Checkout Failed", "You don't have any products inside the cart!");
         return;
       }
 
-      // Decrement Inventory stocks & record official founder revenue statistics!
       let receiptTextItems = [];
       let totalSpent = 0;
 
       cart.forEach(cartItem => {
         const inventoryItem = inventory.find(i => i.id === cartItem.id);
         if (inventoryItem) {
-          // Subtract stock physically
           inventoryItem.stock = Math.max(0, inventoryItem.stock - cartItem.quantity);
           
-          // Log analytic variables
           const totalCostRatio = (inventoryItem.buyPrice * cartItem.quantity);
           const totalRevenueRatio = (inventoryItem.sellPrice * cartItem.quantity);
           
@@ -1036,29 +1073,31 @@
         }
       });
 
-      // Show Checkout Modal
-      document.getElementById('receipt-id').innerText = `#HF-${Math.floor(1000 + Math.random() * 9000)}`;
-      document.getElementById('receipt-items').innerText = receiptTextItems.join(', ');
-      document.getElementById('receipt-total').innerText = `$${totalSpent.toFixed(2)}`;
+      const recIdEl = document.getElementById('receipt-id');
+      const recItemsEl = document.getElementById('receipt-items');
+      const recTotEl = document.getElementById('receipt-total');
+      const checkoutModal = document.getElementById('checkout-modal');
 
-      // Clear the Cart completely
+      if (recIdEl) recIdEl.innerText = `#HF-${Math.floor(1000 + Math.random() * 9000)}`;
+      if (recItemsEl) recItemsEl.innerText = receiptTextItems.join(', ');
+      if (recTotEl) recTotEl.innerText = `$${totalSpent.toFixed(2)}`;
+
       cart = [];
       updateCartBadge();
       toggleCartModal(false);
 
-      // Trigger Confetti Celebration (visually done)
-      document.getElementById('checkout-modal').classList.remove('hidden');
+      if (checkoutModal) checkoutModal.classList.remove('hidden');
 
-      // Update counters
       recalculateAnalytics();
       renderShop();
     }
 
     function closeCheckoutSuccess() {
-      document.getElementById('checkout-modal').classList.add('hidden');
+      const checkoutModal = document.getElementById('checkout-modal');
+      if (checkoutModal) checkoutModal.classList.add('hidden');
     }
 
-    // EXPONENTIAL BACKOFF FOR AI CHAT & GOOGLE SEARCH FLIPS
+    // EXPONENTIAL BACKOFF API FETCH CALLS
     async function fetchWithBackoff(url, options, retries = 5, delay = 1000) {
       for (let i = 0; i < retries; i++) {
         try {
@@ -1081,7 +1120,7 @@
     // AI SCANNER / APPRAISER IMPLEMENTATION (GEMINI)
     async function runHypeAppraiser() {
       const scanInput = document.getElementById('ai-scan-query');
-      const query = scanInput.value.trim();
+      const query = scanInput ? scanInput.value.trim() : "";
       const output = document.getElementById('ai-appraisal-result');
       const btn = document.getElementById('btn-appraise');
 
@@ -1090,21 +1129,24 @@
         return;
       }
 
-      // Loading state
-      btn.disabled = true;
-      btn.innerText = "🔮 Consulting Oracle...";
-      output.classList.remove('hidden');
-      output.innerHTML = `
-        <div class="flex items-center gap-2 text-indigo-400">
-          <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span>Appraising "${query}" potential...</span>
-        </div>
-      `;
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = "🔮 Consulting Oracle...";
+      }
+      
+      if (output) {
+        output.classList.remove('hidden');
+        output.innerHTML = `
+          <div class="flex items-center gap-2 text-indigo-400">
+            <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span>Appraising "${query}" potential...</span>
+          </div>
+        `;
+      }
 
-      // Prompt structured logic
       const systemPrompt = `You are a professional, expert streetwear and collectible reseller named "HypeFlip Oracle". Your goal is to advise two 16-year-old teen founders (Alex & Tyler) on whether a target collectible/sneaker/toy has good flipping margins. Give them structured, realistic, street-smart appraisal advice in crisp HTML formatting. Keep details highly relevant, specifying average sourcing retail, projected resale, risk level out of 10, and a "Teen Pro-tip". Avoid generic lists, sound sharp and expert.`;
 
       const userPrompt = `Appraise this potential flip item: "${query}". Estimate its average sourcing cost, predicted resale market price, risk, and provide action tips for Alex & Tyler.`;
@@ -1124,13 +1166,15 @@
 
         const rawText = response.candidates?.[0]?.content?.parts?.[0]?.text;
         
-        if (rawText) {
-          // Format raw markdown back to html elements inside panel nicely
+        if (rawText && output) {
           let cleanedText = rawText
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*\*(.*?)\*\//g, '<strong>$1</strong>')
             .replace(/\*(.*?)\*/g, '<em>$1</em>')
             .replace(/`([^`]+)`/g, '<code class="bg-gray-900 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
             .replace(/\n/g, '<br>');
+
+          // Escaped inline attributes safely to prevent execution halts
+          const escapedQuery = query.replace(/['"]/g, "");
 
           output.innerHTML = `
             <div class="space-y-2.5">
@@ -1140,46 +1184,59 @@
               </div>
               <p class="text-gray-300 leading-relaxed text-xs">${cleanedText}</p>
               <div class="flex gap-2 pt-2">
-                <button onclick="useAppraisedValues('${query}')" class="w-full bg-green-500 hover:bg-green-400 text-black font-extrabold py-1.5 rounded-lg text-[10px] transition uppercase">
+                <button onclick="useAppraisedValues('${escapedQuery}')" class="w-full bg-green-500 hover:bg-green-400 text-black font-extrabold py-1.5 rounded-lg text-[10px] transition uppercase">
                   💡 Autocomplete Listing Draft
                 </button>
               </div>
             </div>
           `;
-        } else {
+        } else if (output) {
           output.innerHTML = `<span class="text-red-400">Error: Could not retrieve a legible appraisal profile.</span>`;
         }
 
       } catch (err) {
         console.error(err);
-        output.innerHTML = `
-          <div class="space-y-2 text-red-400">
-            <span class="font-bold">❌ Scanning Connection Fault</span>
-            <p class="text-[11px] text-gray-400">Unable to query live AI server. Running offline fallback estimation...</p>
-            <div class="p-3 bg-gray-950 rounded-lg border border-red-500/20 text-xs">
-              <strong>Offline Diagnostic:</strong> High-risk speculative items like Hot Wheels Treasure Hunts are always worth a shot if sourced at retail price ($1.25). Standard reselling markup ranges between <strong>25% - 150%</strong>.
+        if (output) {
+          output.innerHTML = `
+            <div class="space-y-2 text-red-400">
+              <span class="font-bold">❌ Scanning Connection Fault</span>
+              <p class="text-[11px] text-gray-400">Unable to query live AI server. Running offline fallback estimation...</p>
+              <div class="p-3 bg-gray-950 rounded-lg border border-red-500/20 text-xs">
+                <strong>Offline Diagnostic:</strong> High-risk speculative items like Hot Wheels Treasure Hunts are always worth a shot if sourced at retail price ($1.25). Standard reselling markup ranges between <strong>25% - 150%</strong>.
+              </div>
             </div>
-          </div>
-        `;
+          `;
+        }
       } finally {
-        btn.disabled = false;
-        btn.innerText = "⚡ Appraise Potential Profit";
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = "⚡ Appraise Potential Profit";
+        }
       }
     }
 
-    // AUTOPULSE INTEGRATION FOR CONVENIENT LISTING
     function useAppraisedValues(title) {
-      document.getElementById('form-title').value = title;
-      document.getElementById('form-category').value = "Collectibles";
-      document.getElementById('form-buy-price').value = 5.00;
-      document.getElementById('form-sell-price').value = 25.00;
-      document.getElementById('form-stock').value = 2;
-      document.getElementById('form-emoji').value = "🔥";
-      document.getElementById('form-hype').value = 5;
-      document.getElementById('form-desc').value = `Appraised item: ${title}. High resale potential diagnosed by Gemini AI.`;
+      const cleanTitle = title.replace(/['"]/g, "");
+      const fTitle = document.getElementById('form-title');
+      const fCat = document.getElementById('form-category');
+      const fBuy = document.getElementById('form-buy-price');
+      const fSell = document.getElementById('form-sell-price');
+      const fStock = document.getElementById('form-stock');
+      const fEmoji = document.getElementById('form-emoji');
+      const fHype = document.getElementById('form-hype');
+      const fDesc = document.getElementById('form-desc');
+
+      if (fTitle) fTitle.value = cleanTitle;
+      if (fCat) fCat.value = "Collectibles";
+      if (fBuy) fBuy.value = 5.00;
+      if (fSell) fSell.value = 25.00;
+      if (fStock) fStock.value = 2;
+      if (fEmoji) fEmoji.value = "🔥";
+      if (fHype) fHype.value = 5;
+      if (fDesc) fDesc.value = `Appraised item: ${cleanTitle}. High resale potential diagnosed by Gemini AI.`;
       
-      // Auto-scroll up slightly to form
-      document.getElementById('add-item-form').scrollIntoView({ behavior: 'smooth' });
+      const form = document.getElementById('add-item-form');
+      if (form) form.scrollIntoView({ behavior: 'smooth' });
       showToast("📝 Form Pre-filled", "Listing values pre-filled. Adjust price margins as needed!");
     }
 
@@ -1189,12 +1246,13 @@
       const toastTitle = document.getElementById('toast-title');
       const toastMsg = document.getElementById('toast-msg');
 
+      if (!toast || !toastTitle || !toastMsg) return;
+
       toastTitle.innerText = title;
       toastMsg.innerText = msg;
 
       toast.classList.remove('translate-y-24');
       
-      // Auto dismiss
       setTimeout(() => {
         toast.classList.add('translate-y-24');
       }, 4000);
