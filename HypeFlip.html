@@ -15,9 +15,6 @@
       margin: 0;
       padding: 0;
     }
-    #loading-indicator {
-      transition: opacity 0.3s ease;
-    }
   </style>
 
   <!-- Tailwind CSS -->
@@ -62,7 +59,7 @@
       if (debugPanel) {
         debugPanel.classList.remove('hidden');
         document.getElementById('debug-err-msg').innerText = 
-          `Error: ${message}\nSource: ${source}\nLine: ${lineno}:${colno}`;
+          "Error: " + message + "\nSource: " + source + "\nLine: " + lineno + ":" + colno;
       }
       return false; 
     };
@@ -77,12 +74,6 @@
     </div>
     <pre id="debug-err-msg" class="text-xs bg-black/50 p-3 rounded-lg overflow-x-auto font-mono text-red-300"></pre>
     <p class="text-[10px] text-gray-400 mt-2">This panel is only visible during active errors. Use this details output to pinpoint syntax blocks.</p>
-  </div>
-
-  <!-- INITIAL PAGE LOAD INDICATOR -->
-  <div id="loading-indicator" class="fixed inset-0 bg-[#0B0F19] z-50 flex flex-col items-center justify-center gap-3">
-    <div class="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-green-500"></div>
-    <span class="text-xs font-bold text-gray-400 tracking-wider">UNBOXING HYPEFLIP ENGINE...</span>
   </div>
 
   <!-- TOP MARQUEE BANNER -->
@@ -607,16 +598,17 @@
       }
     ];
 
-    // DOM READY STARTUP (Vastly safer for deployment than window.onload)
+    // DOM READY STARTUP (Wrapped in Try-Catch to prevent freezing on any edge cases)
     document.addEventListener("DOMContentLoaded", function() {
-      // Seed Initial Catalog
-      seedInitialCatalog();
-      
-      // Dismiss Loading overlay
-      const loader = document.getElementById('loading-indicator');
-      if (loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => loader.remove(), 300);
+      try {
+        seedInitialCatalog();
+      } catch (e) {
+        console.error("Initialization Failed:", e);
+        const debugPanel = document.getElementById('debug-error-console');
+        if (debugPanel) {
+          debugPanel.classList.remove('hidden');
+          document.getElementById('debug-err-msg').innerText = "Init Fail: " + e.message + "\nStack: " + e.stack;
+        }
       }
     });
 
@@ -634,8 +626,10 @@
       let activeItemCount = 0;
       
       inventory.forEach(item => {
-        activeShelfVal += (item.sellPrice * item.stock);
-        activeItemCount += item.stock;
+        const itemStock = Number(item.stock) || 0;
+        const itemSell = Number(item.sellPrice) || 0;
+        activeShelfVal += (itemSell * itemStock);
+        activeItemCount += itemStock;
       });
 
       const revEl = document.getElementById('stat-revenue');
@@ -646,17 +640,17 @@
       const countEl = document.getElementById('stat-active-count');
       const heroEl = document.getElementById('hero-total-items');
 
-      if (revEl) revEl.innerText = `$${analytics.revenue.toFixed(2)}`;
-      if (cogsEl) cogsEl.innerText = `$${analytics.cogs.toFixed(2)}`;
-      if (profEl) profEl.innerText = `$${analytics.profit.toFixed(2)}`;
+      if (revEl) revEl.innerText = "$" + analytics.revenue.toFixed(2);
+      if (cogsEl) cogsEl.innerText = "$" + analytics.cogs.toFixed(2);
+      if (profEl) profEl.innerText = "$" + analytics.profit.toFixed(2);
       
       if (marginEl) {
         const marginPct = analytics.revenue > 0 ? ((analytics.profit / analytics.revenue) * 100).toFixed(0) : 0;
-        marginEl.innerText = `★ ${marginPct}% average net margin`;
+        marginEl.innerText = "★ " + marginPct + "% average net margin";
       }
 
-      if (shelfEl) shelfEl.innerText = `$${activeShelfVal.toFixed(2)}`;
-      if (countEl) countEl.innerText = `${activeItemCount} items currently in store`;
+      if (shelfEl) shelfEl.innerText = "$" + activeShelfVal.toFixed(2);
+      if (countEl) countEl.innerText = activeItemCount + " items currently in store";
       if (heroEl) heroEl.innerText = inventory.length;
     }
 
@@ -692,7 +686,7 @@
       currentCategoryFilter = cat;
       const cats = ['All', 'Collectibles', 'Sneakers', 'Tech'];
       cats.forEach(c => {
-        const btn = document.getElementById(`cat-${c.toLowerCase()}`);
+        const btn = document.getElementById("cat-" + c.toLowerCase());
         if (!btn) return;
         if (c === cat) {
           btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-green-500 text-black";
@@ -734,14 +728,16 @@
 
       filtered.forEach(item => {
         let flames = "";
+        const hypeCount = Number(item.hype) || 0;
         for (let i = 0; i < 5; i++) {
-          flames += (i < item.hype) ? "🔥" : "✨";
+          flames += (i < hypeCount) ? "🔥" : "✨";
         }
 
-        // Safer flat template extraction for browser rendering engines
         const lowStockBadge = item.stock <= 2 
           ? `<span class="absolute top-3 right-3 text-[10px] bg-red-500/10 text-red-400 font-extrabold uppercase tracking-wider px-2 py-0.5 rounded border border-red-500/20 animate-pulse">LOW STOCK</span>` 
           : '';
+
+        const sellPrice = Number(item.sellPrice) || 0;
 
         const cardHtml = `
           <div class="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden hover:border-gray-700 transition duration-300 flex flex-col group">
@@ -770,8 +766,8 @@
                 <div>
                   <span class="block text-[10px] text-gray-500 uppercase font-extrabold">Price Flipping</span>
                   <div class="flex items-baseline gap-1.5">
-                    <span class="text-xl font-black text-white">$${item.sellPrice.toFixed(2)}</span>
-                    <span class="text-xs text-gray-500 line-through">$${(item.sellPrice * 1.3).toFixed(0)}</span>
+                    <span class="text-xl font-black text-white">$${sellPrice.toFixed(2)}</span>
+                    <span class="text-xs text-gray-500 line-through">$${(sellPrice * 1.3).toFixed(0)}</span>
                   </div>
                 </div>
                 <button onclick="addToCart('${item.id}')" class="bg-green-500 hover:bg-green-400 text-black font-extrabold px-4 py-2.5 rounded-xl text-xs transition duration-200 flex items-center gap-1">
@@ -794,8 +790,10 @@
       tableBody.innerHTML = "";
 
       inventory.forEach(item => {
-        const profit = item.sellPrice - item.buyPrice;
-        const marginPct = ((profit / item.sellPrice) * 100).toFixed(0);
+        const itemBuy = Number(item.buyPrice) || 0;
+        const itemSell = Number(item.sellPrice) || 0;
+        const profit = itemSell - itemBuy;
+        const marginPct = itemSell > 0 ? ((profit / itemSell) * 100).toFixed(0) : 0;
 
         const row = `
           <tr class="hover:bg-gray-800/40 transition">
@@ -808,8 +806,8 @@
                 </div>
               </div>
             </td>
-            <td class="p-3 text-gray-300 font-medium">$${item.buyPrice.toFixed(2)}</td>
-            <td class="p-3 text-white font-semibold">$${item.sellPrice.toFixed(2)}</td>
+            <td class="p-3 text-gray-300 font-medium">$${itemBuy.toFixed(2)}</td>
+            <td class="p-3 text-white font-semibold">$${itemSell.toFixed(2)}</td>
             <td class="p-3">
               <span class="text-green-400 font-bold">$${profit.toFixed(2)}</span>
               <span class="text-[10px] text-gray-500 block">(${marginPct}% margin)</span>
@@ -832,7 +830,7 @@
       });
 
       const tableCountEl = document.getElementById('admin-table-count');
-      if (tableCountEl) tableCountEl.innerText = `${inventory.length} Unique Listings`;
+      if (tableCountEl) tableCountEl.innerText = inventory.length + " Unique Listings";
       recalculateAnalytics();
     }
 
@@ -872,7 +870,7 @@
       document.getElementById('add-item-form').reset();
 
       renderAdminView();
-      showToast("🚀 Flip Added!", `Listed ${title} in the storefront catalog!`);
+      showToast("🚀 Flip Added!", "Listed " + title + " in the storefront catalog!");
     }
 
     function adjustStock(itemId, amount) {
@@ -888,7 +886,7 @@
       const title = targetItem ? targetItem.title : "Product";
       inventory = inventory.filter(item => item.id !== itemId);
       renderAdminView();
-      showToast("🗑️ Flip Removed", `${title} has been pulled from inventory shelves.`);
+      showToast("🗑️ Flip Removed", title + " has been pulled from inventory shelves.");
     }
 
     // SIMULATE A RANDOM SALE (ENTREPRENEURIAL FUN COMPONENT)
@@ -912,7 +910,7 @@
       analytics.profit += (randomItem.sellPrice - randomItem.buyPrice);
 
       renderAdminView();
-      showToast("🔥 Simulated Flip Accomplished!", `Customer bought 1x "${randomItem.title}" for $${randomItem.sellPrice.toFixed(2)}`);
+      showToast("🔥 Simulated Flip Accomplished!", "Customer bought 1x \"" + randomItem.title + "\" for $" + randomItem.sellPrice.toFixed(2));
     }
 
     // SHOPPING CART CONTROLLERS
@@ -944,9 +942,9 @@
       if (existingCartItem) {
         if (existingCartItem.quantity < catalogItem.stock) {
           existingCartItem.quantity++;
-          showToast("🛒 Added Additional Item", `Added another "${catalogItem.title}" to cart.`);
+          showToast("🛒 Added Additional Item", "Added another \"" + catalogItem.title + "\" to cart.");
         } else {
-          showToast("⚠️ Max Sourced Stock Reached", `Only ${catalogItem.stock} of this item are sourced!`);
+          showToast("⚠️ Max Sourced Stock Reached", "Only " + catalogItem.stock + " of this item are sourced!");
           return;
         }
       } else {
@@ -957,7 +955,7 @@
           emoji: catalogItem.emoji,
           quantity: 1
         });
-        showToast("🛒 Added to Cart", `Placed "${catalogItem.title}" inside shopping cart!`);
+        showToast("🛒 Added to Cart", "Placed \"" + catalogItem.title + "\" inside shopping cart!");
       }
 
       updateCartBadge();
@@ -975,7 +973,7 @@
         cart = cart.filter(item => item.id !== itemId);
       } else if (cartItem.quantity > catalogItem.stock) {
         cartItem.quantity = catalogItem.stock;
-        showToast("⚠️ Max Sourced Stock Reached", `Only ${catalogItem.stock} of this item are currently in inventory!`);
+        showToast("⚠️ Max Sourced Stock Reached", "Only " + catalogItem.stock + " of this item are currently in inventory!");
       }
 
       updateCartBadge();
@@ -1043,8 +1041,8 @@
         container.innerHTML += cartRow;
       });
 
-      subtotalLabel.innerText = `$${subtotal.toFixed(2)}`;
-      panelCount.innerText = `${totalItems} items`;
+      subtotalLabel.innerText = "$" + subtotal.toFixed(2);
+      panelCount.innerText = totalItems + " items";
     }
 
     function initiateCheckout() {
@@ -1068,7 +1066,7 @@
           analytics.cogs += totalCostRatio;
           analytics.profit += (totalRevenueRatio - totalCostRatio);
 
-          receiptTextItems.push(`${cartItem.quantity}x ${cartItem.title}`);
+          receiptTextItems.push(cartItem.quantity + "x " + cartItem.title);
           totalSpent += totalRevenueRatio;
         }
       });
@@ -1078,9 +1076,9 @@
       const recTotEl = document.getElementById('receipt-total');
       const checkoutModal = document.getElementById('checkout-modal');
 
-      if (recIdEl) recIdEl.innerText = `#HF-${Math.floor(1000 + Math.random() * 9000)}`;
+      if (recIdEl) recIdEl.innerText = "#HF-" + Math.floor(1000 + Math.random() * 9000);
       if (recItemsEl) recItemsEl.innerText = receiptTextItems.join(', ');
-      if (recTotEl) recTotEl.innerText = `$${totalSpent.toFixed(2)}`;
+      if (recTotEl) recTotEl.innerText = "$" + totalSpent.toFixed(2);
 
       cart = [];
       updateCartBadge();
@@ -1108,7 +1106,7 @@
             delay *= 2;
             continue;
           }
-          throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error("HTTP error! status: " + response.status);
         } catch (error) {
           if (i === retries - 1) throw error;
           await new Promise(res => setTimeout(res, delay));
@@ -1147,9 +1145,9 @@
         `;
       }
 
-      const systemPrompt = `You are a professional, expert streetwear and collectible reseller named "HypeFlip Oracle". Your goal is to advise two 16-year-old teen founders (Alex & Tyler) on whether a target collectible/sneaker/toy has good flipping margins. Give them structured, realistic, street-smart appraisal advice in crisp HTML formatting. Keep details highly relevant, specifying average sourcing retail, projected resale, risk level out of 10, and a "Teen Pro-tip". Avoid generic lists, sound sharp and expert.`;
+      const systemPrompt = "You are a professional, expert streetwear and collectible reseller named \"HypeFlip Oracle\". Your goal is to advise two 16-year-old teen founders (Alex & Tyler) on whether a target collectible/sneaker/toy has good flipping margins. Give them structured, realistic, street-smart appraisal advice in crisp HTML formatting. Keep details highly relevant, specifying average sourcing retail, projected resale, risk level out of 10, and a \"Teen Pro-tip\". Avoid generic lists, sound sharp and expert.";
 
-      const userPrompt = `Appraise this potential flip item: "${query}". Estimate its average sourcing cost, predicted resale market price, risk, and provide action tips for Alex & Tyler.`;
+      const userPrompt = "Appraise this potential flip item: \"" + query + "\". Estimate its average sourcing cost, predicted resale market price, risk, and provide action tips for Alex & Tyler.";
 
       const requestPayload = {
         contents: [{ parts: [{ text: userPrompt }] }],
@@ -1157,7 +1155,7 @@
       };
 
       try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=" + apiKey;
         const response = await fetchWithBackoff(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1167,13 +1165,18 @@
         const rawText = response.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (rawText && output) {
-          let cleanedText = rawText
-            .replace(/\*\*(.*?)\*\//g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/`([^`]+)`/g, '<code class="bg-gray-900 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
-            .replace(/\n/g, '<br>');
+          // Robust regular expression class constructs to completely prevent Jekyll/Minifier inline comment bugs
+          const boldRegex = new RegExp('\\*\\*(.*?)\\*\\*', 'g');
+          const italicRegex = new RegExp('\\*(.*?)\\*', 'g');
+          const codeRegex = new RegExp('`([^`]+)`', 'g');
+          const newlineRegex = new RegExp('\\n', 'g');
 
-          // Escaped inline attributes safely to prevent execution halts
+          let cleanedText = rawText
+            .replace(boldRegex, '<strong>$1</strong>')
+            .replace(italicRegex, '<em>$1</em>')
+            .replace(codeRegex, '<code class="bg-gray-900 px-1 py-0.5 rounded font-mono text-xs">$1</code>')
+            .replace(newlineRegex, '<br>');
+
           const escapedQuery = query.replace(/['"]/g, "");
 
           output.innerHTML = `
@@ -1233,7 +1236,7 @@
       if (fStock) fStock.value = 2;
       if (fEmoji) fEmoji.value = "🔥";
       if (fHype) fHype.value = 5;
-      if (fDesc) fDesc.value = `Appraised item: ${cleanTitle}. High resale potential diagnosed by Gemini AI.`;
+      if (fDesc) fDesc.value = "Appraised item: " + cleanTitle + ". High resale potential diagnosed by Gemini AI.";
       
       const form = document.getElementById('add-item-form');
       if (form) form.scrollIntoView({ behavior: 'smooth' });
